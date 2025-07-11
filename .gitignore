@@ -33,6 +33,7 @@
 # 依存関係や外部ライブラリ
 /packages
 /Dependencies
+/lib
 
 # その他の不要ファイル
 *.bak
