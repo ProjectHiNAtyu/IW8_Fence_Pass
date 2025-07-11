@@ -1,0 +1,42 @@
+# Visual Studio 特定の一時ファイルおよびビルド成果物
+*.obj
+*.pdb
+*.ilk
+*.exe
+*.dll
+*.lib
+*.tlog
+*.log
+*.idb
+*.sdf
+*.suo
+*.user
+*.aps
+*.ncb
+*.opensdf
+*.cache
+*.VC.db
+*.VC.VC.opendb
+*.sln.docstates
+*.vs
+*.vs*
+
+# ビルドフォルダ
+/Debug
+/Release
+/x64
+/x86
+/bin
+/obj
+/out
+
+# 依存関係や外部ライブラリ
+/packages
+/Dependencies
+
+# その他の不要ファイル
+*.bak
+*.tmp
+*.swp
+Thumbs.db
+.DS_Store
