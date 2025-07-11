@@ -4,7 +4,6 @@
 *.ilk
 *.exe
 *.dll
-*.lib
 *.tlog
 *.log
 *.idb
@@ -19,21 +18,13 @@
 *.VC.VC.opendb
 *.sln.docstates
 *.vs
-*.vs*
-
-# ビルドフォルダ
-/Debug
-/Release
-/x64
-/x86
-/bin
-/obj
-/out
-
-# 依存関係や外部ライブラリ
-/packages
-/Dependencies
-/lib
+Debug/
+Release/
+x64/
+x86/
+bin/
+obj/
+out/
 
 # その他の不要ファイル
 *.bak
@@ -41,3 +32,7 @@
 *.swp
 Thumbs.db
 .DS_Store
+
+# lib フォルダと lminhook.lib を追跡対象に
+!lib/
+!lib/lminhook.lib
