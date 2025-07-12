@@ -1178,6 +1178,45 @@ inline bool file_exists(const char* name)
 
 
 
+//++++++++++++++++++++++++++++++
+// en : Record console output and file logs
+// ja : コンソール出力とファイルログを記録
+//++++++++++++++++++++++++++++++
+void NotifyMsg(const char* format, ...)
+{
+	// 可変引数リストの処理
+	va_list args;
+	va_start(args, format);
+
+	// コンソールに出力し、即座にフラッシュ
+	vprintf(format, args);
+	//printf("\n"); // 改行を確実に追加
+	fflush(stdout); // 即座にフラッシュ
+
+	// ログファイルに書き込む
+	// 現在のDLLのファイルパスを取得
+	char dllPath[MAX_PATH];
+	GetModuleFileNameA(NULL, dllPath, MAX_PATH);
+
+	// ディレクトリ部分を抽出
+	std::string path(dllPath);
+	std::string logFilePath = path.substr(0, path.find_last_of("\\/")) + "\\debuglog.txt";
+
+	// ファイルに追記し、即座にフラッシュ
+	FILE* fp = fopen(logFilePath.c_str(), "a");
+	if (fp)
+	{
+		vfprintf(fp, format, args);
+		//fprintf(fp, "\n"); // 改行を確実に追加
+		fflush(fp); // 即座にディスクに書き込み
+		fclose(fp);
+	}
+
+	va_end(args);
+}
+
+
+
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
 // en : Address Construction
@@ -1426,20 +1465,20 @@ XAssetHeader DB_FindXAssetHeader_d(XAssetType type, const char* given_name, int 
 
 	if (res.data != nullptr)
 	{
-		//printf("[Notice] <DB_FindXAssetHeader> Find asset : %d' - %s'\n", type, given_name);
+		//NotifyMsg("[Notice] <DB_FindXAssetHeader> Find asset : %d' - %s'\n", type, given_name);
 	}
 
 	if (type == XAssetType::ASSET_TYPE_LOCALIZE && res.data != nullptr)
 	{
-		//printf("[Notice] <DB_FindXAssetHeader> Find asset : %d' - %s'\n", type, given_name);
+		//NotifyMsg("[Notice] <DB_FindXAssetHeader> Find asset : %d' - %s'\n", type, given_name);
 		//res.localize->value = localize_string(given_name, res.localize->value);
 		if (!_loadMainMenu)
 		{
 			if (strcmp(given_name, "MENU/STATUS") == 0)
 			{
-				printf("[Notice] <DB_FindXAssetHeader> Find asset : %d' - %s'\n", type, given_name);
+				NotifyMsg("[Notice] <DB_FindXAssetHeader> Find asset : %d' - %s'\n", type, given_name);
 				//GeneralPatches();
-				//printf("** Success ** <DB_FindXAssetHeader> Stats loaded!\n");
+				//NotifyMsg("** Success ** <DB_FindXAssetHeader> Stats loaded!\n");
 				_loadMainMenu = true;
 			}
 		}
@@ -1456,12 +1495,12 @@ XAssetHeader DB_FindXAssetHeader_d(XAssetType type, const char* given_name, int 
 //++++++++++++++++++++++++++++++
 int DB_LoadXFile_d(const char* zone_name, XZoneMemory* zone_mem, XAssetList* asset_list, unsigned int zone_flags, bool was_paused, DB_FastFileFailureMode failure_mode, DB_AuthSignature* out_signature)
 {
-	printf("[Notice] <DB_LoadXFile> Loading FastFile '%s'\n", zone_name == nullptr ? "<null>" : zone_name);
+	NotifyMsg("[Notice] <DB_LoadXFile> Loading FastFile '%s'\n", zone_name == nullptr ? "<null>" : zone_name);
 
 	int res = _hooks.DB_LoadXFile_h.stub<int>(zone_name, zone_mem, asset_list, zone_flags, was_paused, failure_mode, out_signature);
 	if (res != 0)
 	{
-		printf("** Failed ** <DB_LoadXFile> FastFile '%s' with non-zero code '%d'\n", zone_name == nullptr ? "<null>" : zone_name, res);
+		NotifyMsg("** Failed ** <DB_LoadXFile> FastFile '%s' with non-zero code '%d'\n", zone_name == nullptr ? "<null>" : zone_name, res);
 	}
 	return res;
 }
@@ -1521,7 +1560,7 @@ int LUI_LuaCall_LUIGlobalPackage_DebugPrint_d(lua_State* lua_vm)
 	std::size_t str_sz = 0;
 	const char* str = lua_tolstring(lua_vm, 1, &str_sz);
 
-	printf("[Debug] <LUI_LuaCall_LUIGlobalPackage_DebugPrint> %s\n", str && str_sz ? std::string(str, str_sz).c_str() : "<null>");
+	NotifyMsg("[Debug] <LUI_LuaCall_LUIGlobalPackage_DebugPrint> %s\n", str && str_sz ? std::string(str, str_sz).c_str() : "<null>");
 	return _hooks.LUI_LuaCall_LUIGlobalPackage_DebugPrint_h.stub<int>(lua_vm);
 }
 
@@ -1560,7 +1599,7 @@ void LUI_ReportError_d(const char* error, lua_State* lua_vm)
 	std::size_t str_sz = 0;
 	const char* str = lua_tolstring(lua_vm, 1, &str_sz);
 
-	printf("[Error!!] <LUI_ReportError> %s -> %s\n", (error ? error : "<null>"), ((str && str_sz) ? std::string(str, str_sz).c_str() : "<null>"));
+	NotifyMsg("[Error!!] <LUI_ReportError> %s -> %s\n", (error ? error : "<null>"), ((str && str_sz) ? std::string(str, str_sz).c_str() : "<null>"));
 	_hooks.LUI_ReportError_h.stub<void>(error, lua_vm);
 }
 
@@ -1594,13 +1633,13 @@ void LUIMethod_LUIGlobalPackage_list_f()
 		auto func_name = cmd->get_name((std::uint64_t*)CalcAdr(_adr.unk_EncryptionKey));
 		if (func_name)
 		{
-			printf("[Notice] <LUIMethod_LUIGlobalPackage_list> Get LUI Function %s.\n", func_name);
+			NotifyMsg("[Notice] <LUIMethod_LUIGlobalPackage_list> Get LUI Function %s.\n", func_name);
 
 			//if (strcmp("DebugPrint", func_name) == 0)
 			//{
 			//	uintptr_t func_addr = reinterpret_cast<uintptr_t>((cmd->func_));
 			//	_hooks.LUI_LuaCall_LUIGlobalPackage_DebugPrint_h.create(func_addr, LUI_LuaCall_LUIGlobalPackage_DebugPrint_d);
-			//	printf("[Success] <LUIMethod_LUIGlobalPackage_list> Success hooked %s.\n", func_name);
+			//	NotifyMsg("[Success] <LUIMethod_LUIGlobalPackage_list> Success hooked %s.\n", func_name);
 			//	//_hookedLuiFunc = true;
 			//}
 		}
@@ -1739,7 +1778,7 @@ int luaL_loadbuffer_d(lua_State* s, const char* buf, size_t size, const char* na
 		std::filesystem::create_directories(directory);
 	}
 
-	printf("[Debug] <luaL_loadbuffer> name = %s\n", name);
+	NotifyMsg("[Debug] <luaL_loadbuffer> name = %s\n", name);
 
 	return _hooks.luaL_loadbuffer_h.stub<int>(s, buf, size, name);
 }
@@ -1768,7 +1807,7 @@ void ExtractLuaScript(const char* file)
 	
 	if (temp == nullptr)
 	{
-		printf("[Failed] <ExtractLuaScript> Failed to find luafile from db_header : %s\n", file);
+		NotifyMsg("[Failed] <ExtractLuaScript> Failed to find luafile from db_header : %s\n", file);
 	}
 	else
 	{
@@ -1786,7 +1825,7 @@ void ExtractLuaScript(const char* file)
 		std::ofstream luafiledump(lua_path, std::ios::out | std::ios::binary);
 		if (!luafiledump.is_open())
 		{
-			printf("[Failed] <ExtractLuaScript> Failed to open output file: %s\n", lua_path.c_str());
+			NotifyMsg("[Failed] <ExtractLuaScript> Failed to open output file: %s\n", lua_path.c_str());
 			return;
 		}
 
@@ -1800,7 +1839,7 @@ void ExtractLuaScript(const char* file)
 		// 初期化
 		if (inflateInit(&stream) != Z_OK)
 		{
-			printf("[Failed] <ExtractLuaScript> inflateInit failed for %s\n", file);
+			NotifyMsg("[Failed] <ExtractLuaScript> inflateInit failed for %s\n", file);
 			luafiledump.close();
 			return;
 		}
@@ -1819,7 +1858,7 @@ void ExtractLuaScript(const char* file)
 		int ret = inflate(&stream, Z_FINISH);
 		if (ret != Z_STREAM_END)
 		{
-			printf("[Failed] <ExtractLuaScript> ZLib decompression failed for %s: %s\n", file, stream.msg ? stream.msg : "Unknown error");
+			NotifyMsg("[Failed] <ExtractLuaScript> ZLib decompression failed for %s: %s\n", file, stream.msg ? stream.msg : "Unknown error");
 			inflateEnd(&stream);
 			luafiledump.close();
 			return;
@@ -1835,7 +1874,7 @@ void ExtractLuaScript(const char* file)
 
 		luafiledump.close();
 		
-		printf("[Success] <ExtractLuaScript> Lua file dumped successfully: %s\n", lua_path.c_str());
+		NotifyMsg("[Success] <ExtractLuaScript> Lua file dumped successfully: %s\n", lua_path.c_str());
 	}
 }
 
@@ -1865,13 +1904,13 @@ void LoadCustomLua(lua_State* s, const char* file)
 	}
 	else
 	{
-		// printf("[Notice] <luaL_loadfile> Loaded official Lua script : %s\n", file);
+		// NotifyMsg("[Notice] <luaL_loadfile> Loaded official Lua script : %s\n", file);
 	}
 
 	if (0 < custom_code.size())
 	{
 		luaL_loadbuffer_f(s, custom_code.c_str(), custom_code.size(), file);
-		printf("[Success] <luaL_loadfile> Injecting custom Lua code from file : %s\n", lua_path.c_str());
+		NotifyMsg("[Success] <luaL_loadfile> Injecting custom Lua code from file : %s\n", lua_path.c_str());
 	}
 
 	return;
@@ -1887,7 +1926,7 @@ void LoadCustomLua(lua_State* s, const char* file)
 int luaL_loadfile_d(lua_State* s, const char* file_name)
 {
 	auto res = _hooks.luaL_loadfile_h.stub<int>(s, file_name);
-	//printf("[Notice] <luaL_loadfile> Loading LuaFile '%s'\n", (file_name != nullptr) ? file_name : "<null>");
+	//NotifyMsg("[Notice] <luaL_loadfile> Loading LuaFile '%s'\n", (file_name != nullptr) ? file_name : "<null>");
 	if (file_name != nullptr)
 	{
 		LoadCustomLua(s, file_name);
@@ -1914,31 +1953,31 @@ void luaL_openlib_d(lua_State* s, const char* lib_name, const luaL_Reg* l, unsig
 
 			std::string full_name = std::format("{}.{}", lib_name, f->name_);
 			uintptr_t func_addr = reinterpret_cast<uintptr_t>(f->func_);
-			//printf("[Notice] <luaL_openlib> Get LUI Function %s.\n", full_name.c_str());
+			//NotifyMsg("[Notice] <luaL_openlib> Get LUI Function %s.\n", full_name.c_str());
 
 			/*
 			if (strcmp("Engine.HDGDBCJFG", full_name.c_str()) == 0)
 			{
 				LuaShared_LuaCall_IsConsoleGame_h.create(func_addr, LuaShared_LuaCall_IsConsoleGame_d);
-				printf("[Success] <luaL_openlib> Success hooked %s.\n", full_name.c_str());
+				NotifyMsg("[Success] <luaL_openlib> Success hooked %s.\n", full_name.c_str());
 				_hookedLuiFunc = true;
 			}
 			else if (strcmp("Engine.BBHAECABBD", full_name.c_str()) == 0)
 			{
 				LUI_COD_LuaCall_HasActiveLocalClient_h.create(func_addr, LUI_COD_LuaCall_HasActiveLocalClient_d);
-				printf("[Success] <luaL_openlib> Success hooked %s.\n", full_name.c_str());
+				NotifyMsg("[Success] <luaL_openlib> Success hooked %s.\n", full_name.c_str());
 				_hookedLuiFunc = true;
 			}
 			else if (strcmp("Engine.CEEDFDDICC", full_name.c_str()) == 0)
 			{
 				LUI_CoD_LuaCall_StatsResetGetState_h.create(func_addr, LUI_CoD_LuaCall_StatsResetGetState_d);
-				printf("[Success] <luaL_openlib> Success hooked %s.\n", full_name.c_str());
+				NotifyMsg("[Success] <luaL_openlib> Success hooked %s.\n", full_name.c_str());
 				_hookedLuiFunc = true;
 			}
 			else if (strcmp("Engine.BHICADFIHA", full_name.c_str()) == 0)
 			{
 				LuaShared_LuaCall_IsDevelopmentBuild_h.create(func_addr, LuaShared_LuaCall_IsDevelopmentBuild_d);
-				printf("[Success] <luaL_openlib> Success hooked %s.\n", full_name.c_str());
+				NotifyMsg("[Success] <luaL_openlib> Success hooked %s.\n", full_name.c_str());
 				_hookedLuiFunc = true;
 			}*/
 		}
@@ -2078,7 +2117,7 @@ dvar_t* Dvar_RegisterBool_d(const char* dvar_name, bool value, unsigned int flag
 	};
 
 
-	//printf("[Notice] <Dvar_RegisterBool> Registering Dvar '%s'\n", dvar_name);
+	//NotifyMsg("[Notice] <Dvar_RegisterBool> Registering Dvar '%s'\n", dvar_name);
 
 	bool value_patched = value;
 	std::uint32_t flags_patched = flags;
@@ -2091,14 +2130,14 @@ dvar_t* Dvar_RegisterBool_d(const char* dvar_name, bool value, unsigned int flag
 			{
 				disclaimer = " - unnecessary";
 			}
-			printf("[Success] <Dvar_RegisterBool> Patched '%s' -> %s %s\n", names.first.c_str(), val ? "true" : "false", disclaimer);
+			NotifyMsg("[Success] <Dvar_RegisterBool> Patched '%s' -> %s %s\n", names.first.c_str(), val ? "true" : "false", disclaimer);
 			value_patched = val;
 		}
 	}
 
 	if (strcmp(dvar_name, "LPSPMQSNPQ") == 0)
 	{
-		//printf("[Success] <Dvar_RegisterBool> Patched 'systemlink'\n");
+		//NotifyMsg("[Success] <Dvar_RegisterBool> Patched 'systemlink'\n");
 		//value_patched = true;
 		//flags_patched = 0x80;
 	}
@@ -2116,7 +2155,7 @@ bool Dvar_SetBool_Internal_f(dvar_t** dvar, bool setFlag, int setValue, const ch
 {
 	if (!dvar || !*dvar)
 	{
-		printf("<Error> Invalid dev data '%s' pointer\n", fmt);
+		NotifyMsg("<Error> Invalid dev data '%s' pointer\n", fmt);
 		return false;
 	}
 
@@ -2126,7 +2165,7 @@ bool Dvar_SetBool_Internal_f(dvar_t** dvar, bool setFlag, int setValue, const ch
 
 	if (!Dvar_SetBool_Internal)
 	{
-		printf("<Error> Invalid 'write dev data' function pointer\n");
+		NotifyMsg("<Error> Invalid 'write dev data' function pointer\n");
 		return false;
 	}
 
@@ -2135,16 +2174,16 @@ bool Dvar_SetBool_Internal_f(dvar_t** dvar, bool setFlag, int setValue, const ch
 		Dvar_SetBool_Internal(*dvar, setFlag, setValue);
 		if (setFlag)
 		{
-			printf("<OK> Successfully set dev data '%s' to true\n", fmt);
+			NotifyMsg("<OK> Successfully set dev data '%s' to true\n", fmt);
 		}
 		else
 		{
-			printf("<OK> Successfully set dev data '%s' to false\n", fmt);
+			NotifyMsg("<OK> Successfully set dev data '%s' to false\n", fmt);
 		}
 	}
 	catch (...)
 	{
-		printf("<Error> Exception occurred while setting dev data '%s'\n", fmt);
+		NotifyMsg("<Error> Exception occurred while setting dev data '%s'\n", fmt);
 		return false;
 	}
 
@@ -2167,7 +2206,7 @@ bool Dvar_SetBool_Internal_f(dvar_t** dvar, bool setFlag, int setValue, const ch
 //++++++++++++++++++++++++++++++
 void DDL_Lookup_MoveToNameHash_d(const DDLState* fromState, DDLState* toState, const char* name, unsigned int nameHash, bool suppressErrors)
 {
-	printf("[Notice] <DDL_Lookup_MoveToNameHash> DDL name %s | hash %u | supErr %s\n", name, nameHash, (suppressErrors ? "true" : "false"));
+	NotifyMsg("[Notice] <DDL_Lookup_MoveToNameHash> DDL name %s | hash %u | supErr %s\n", name, nameHash, (suppressErrors ? "true" : "false"));
 	_hooks.DDL_Lookup_MoveToNameHash_h.stub<void>(fromState, toState, name, nameHash, suppressErrors);
 }
 
@@ -2180,7 +2219,7 @@ void DDL_Lookup_MoveToNameHash_d(const DDLState* fromState, DDLState* toState, c
 DDLFile* Com_DDL_LoadAsset_d(const char* fileName)
 {
 	DDLFile* result = _hooks.Com_DDL_LoadAsset_h.stub<DDLFile*>(fileName);
-	printf("[Notice] <Com_DDL_LoadAsset> %s = %s\n", fileName, ((result != 0) ? "exist" : "null"));
+	NotifyMsg("[Notice] <Com_DDL_LoadAsset> %s = %s\n", fileName, ((result != 0) ? "exist" : "null"));
 	return result;
 }
 
@@ -2220,7 +2259,7 @@ void dump_gsc_script(std::ofstream& stream, ScriptFile* scriptfile)
 //++++++++++++++++++++++++++++++
 void Load_ScriptFile_d(DBStreamStart streamStart)
 {
-	//printf("[Notice] <Load_ScriptFile> ");
+	//NotifyMsg("[Notice] <Load_ScriptFile> ");
 
     // ========================================================================================== //
     // for Dump
@@ -2247,7 +2286,7 @@ void Load_ScriptFile_d(DBStreamStart streamStart)
         }
 
         ReplaceAll(scriptFileStr, "/", "\\");
-		//printf("path '%s' -> ", scriptFileStr.c_str());
+		//NotifyMsg("path '%s' -> ", scriptFileStr.c_str());
 
         size_t lastSlash = scriptFileStr.find_last_of("\\");
         if (lastSlash != std::string::npos && isSubStr(scriptFileStr, "\\"))
@@ -2260,16 +2299,16 @@ void Load_ScriptFile_d(DBStreamStart streamStart)
         std::ofstream gscbin_file(scriptFileStr, std::ios::out | std::ios::binary);
         if (gscbin_file.is_open())
         {
-			//printf("gsc dumped!");
-			printf("[Sucess] <Load_ScriptFile> GSCBIN dumped : %s\n", scriptFileStr.c_str());
+			//NotifyMsg("gsc dumped!");
+			NotifyMsg("[Sucess] <Load_ScriptFile> GSCBIN dumped : %s\n", scriptFileStr.c_str());
             dump_gsc_script(gscbin_file, scriptfile);
             gscbin_file.close();
         }
 		else
 		{
-			printf("[Failed] <Load_ScriptFile> Failed GSCBIN dump ... : %s\n", scriptFileStr.c_str());
+			NotifyMsg("[Failed] <Load_ScriptFile> Failed GSCBIN dump ... : %s\n", scriptFileStr.c_str());
 		}
-		//printf("\n");
+		//NotifyMsg("\n");
     }
     
     // ========================================================================================== //
@@ -2328,7 +2367,7 @@ void Load_ScriptFile_d(DBStreamStart streamStart)
         if (scriptfile)
         {
             scriptname = std::string(scriptfile->name);
-			//printf("GSC '%s' -> ", scriptfile->name);
+			//NotifyMsg("GSC '%s' -> ", scriptfile->name);
 
             if (isSubStr(scriptfile->name, ".gsc"))
             {
@@ -2343,11 +2382,11 @@ void Load_ScriptFile_d(DBStreamStart streamStart)
 
             if (file_exists(filepath.c_str()))
             {
-				//printf("Custom GSC found!");
+				//NotifyMsg("Custom GSC found!");
                 scriptgscbin = true;
             }
 
-			//printf("\n");
+			//NotifyMsg("\n");
 
             if (!strcmp(scriptfile->name, "scripts/mp/killstreaks/supply_sweep.gsc"))
             {
@@ -2427,7 +2466,7 @@ void Load_ScriptFile_d(DBStreamStart streamStart)
             delete[] customScript;
             script.close();
 
-			printf("[Success] <Load_ScriptFile> Custom GSC Injected!! : %s\n", filepath.c_str());
+			NotifyMsg("[Success] <Load_ScriptFile> Custom GSC Injected!! : %s\n", filepath.c_str());
         }
         else
         {
@@ -2452,7 +2491,7 @@ void Load_ScriptFile_d(DBStreamStart streamStart)
             }
             *varbyte = backup;
 
-			printf("[Notice] <Load_ScriptFile> Official GSC Loaded : %s\n", scriptfile->name);
+			NotifyMsg("[Notice] <Load_ScriptFile> Official GSC Loaded : %s\n", scriptfile->name);
         }
 
         DB_PopStreamPos();
@@ -2541,7 +2580,7 @@ void LiveStorage_StatsInit(const int controllerIndex, bool clear, bool freshStar
 //++++++++++++++++++++++++++++++
 void LiveStorage_ReadStats_f(int controllerIndex , StatsSource stats)
 {
-	printf("[Notice] <LiveStorage_ReadStats> called func , idx %d , src %d\n", controllerIndex, stats);
+	NotifyMsg("[Notice] <LiveStorage_ReadStats> called func , idx %d , src %d\n", controllerIndex, stats);
 	auto func = reinterpret_cast<void(*)(int controllerIndex, StatsSource stats)>(CalcAdr(_adr.LiveStorage_ReadStats));
 	func(controllerIndex, stats);
 }
@@ -2556,7 +2595,7 @@ bool LiveStorage_DoWeHaveStatsForSource_f(const int controllerIndex, StatsSource
 {
 	auto func = reinterpret_cast<bool(*)(const int controllerIndex, StatsSource statsSource)>(CalcAdr(_adr.LiveStorage_DoWeHaveStatsForSource));
 	bool result = func(controllerIndex, statsSource);
-	printf("[Notice] <LiveStorage_DoWeHaveStatsForSource> : idx %d , src %s = %s\n", controllerIndex, (statsSource == StatsSource::STATS_ONLINE ? "Online" : "Offline"), (result ? "Exist!" : "None..."));
+	NotifyMsg("[Notice] <LiveStorage_DoWeHaveStatsForSource> : idx %d , src %s = %s\n", controllerIndex, (statsSource == StatsSource::STATS_ONLINE ? "Online" : "Offline"), (result ? "Exist!" : "None..."));
 	return result;
 }
 
@@ -2704,7 +2743,7 @@ uintptr_t Live_GetUserSigninState() { return CalcAdr(_adr.xenonUserData_m_guarde
 //++++++++++++++++++++++++++++++
 void LiveStorage_BeginGame_f(LocalClientNum_t localClientNum)
 {
-	printf("[Notice] <LiveStorage_BeginGame> called func , client %d\n", localClientNum == LocalClientNum_t::LOCAL_CLIENT_0 ? 0 : 1);
+	NotifyMsg("[Notice] <LiveStorage_BeginGame> called func , client %d\n", localClientNum == LocalClientNum_t::LOCAL_CLIENT_0 ? 0 : 1);
 
 	auto func = reinterpret_cast<void(*)(LocalClientNum_t localClientNum)>(CalcAdr(_adr.LiveStorage_BeginGame));
 	func(localClientNum);
@@ -2718,7 +2757,7 @@ void LiveStorage_BeginGame_f(LocalClientNum_t localClientNum)
 //++++++++++++++++++++++++++++++
 void LiveStorage_BeginGame_d(LocalClientNum_t localClientNum)
 {
-	printf("[Notice] <LiveStorage_BeginGame> called func , client %d\n", localClientNum == LocalClientNum_t::LOCAL_CLIENT_0 ? 0 : 1);
+	NotifyMsg("[Notice] <LiveStorage_BeginGame> called func , client %d\n", localClientNum == LocalClientNum_t::LOCAL_CLIENT_0 ? 0 : 1);
 	_hooks.LiveStorage_BeginGame_h.stub<void>(localClientNum);
 }
 
@@ -2730,7 +2769,7 @@ void LiveStorage_BeginGame_d(LocalClientNum_t localClientNum)
 //++++++++++++++++++++++++++++++
 void LiveStorage_ReadStats_d(int controllerIndex)
 {
-	printf("[Notice] <LiveStorage_ReadStats> called func , idx %d\n", controllerIndex);
+	NotifyMsg("[Notice] <LiveStorage_ReadStats> called func , idx %d\n", controllerIndex);
 	_hooks.LiveStorage_ReadStats_h.stub<void>(controllerIndex);
 }
 
@@ -2760,9 +2799,9 @@ void LiveStorage_GetPlayerDataBufferForSource_d(int controllerIndex, int a2, Sta
 		case StatsSource::STATS_OFFLINE:source = "Offline"; break;
 		default: source = "Unknown"; break;
 	}
-	printf("[Notice] <GetPlayerDataBufferForSource> idx = %d , group = %s , src = %s\n", controllerIndex, group.c_str(), source.c_str());
+	NotifyMsg("[Notice] <GetPlayerDataBufferForSource> idx = %d , group = %s , src = %s\n", controllerIndex, group.c_str(), source.c_str());
 	_hooks.LiveStorage_GetPlayerDataBufferForSource_h.stub<void>(controllerIndex, a2, statsGroup, statsSource);
-	//printf("[Notice] <LiveStorage_GetPlayerDataBufferForSource> controllerIndex=%d, statsGroup=%s, statsSource=%s, result=%s\n",
+	//NotifyMsg("[Notice] <LiveStorage_GetPlayerDataBufferForSource> controllerIndex=%d, statsGroup=%s, statsSource=%s, result=%s\n",
 	//	controllerIndex, group.c_str(), source.c_str(), result ? "exist" : "null");
 	//return result;
 }
@@ -2815,7 +2854,7 @@ void ProfilePatches()
 	*/
 	XUID xuid;
 	xuid.RandomXUID();
-	printf("[Notice] xuid : %llu\n", xuid.m_id);
+	NotifyMsg("[Notice] xuid : %llu\n", xuid.m_id);
 	uint64_t xuidValue = xuid.m_id;
 	//uint64_t xuidValue = 0x12345678;
 	const char* xuid_string = utils::string::va("%Iu", xuidValue);
@@ -2855,7 +2894,7 @@ void ProfilePatches()
 
 	XUID xuid2;
 	xuid2.RandomXUID();
-	printf("[Notice] xuid2 : %llu\n", xuid2.m_id);
+	NotifyMsg("[Notice] xuid2 : %llu\n", xuid2.m_id);
 	uint64_t xuidValue2 = xuid2.m_id;
 	//uint64_t xuidValue = 0x12345678;
 	const char* xuid_string2 = utils::string::va("%Iu", xuidValue2);
@@ -2898,7 +2937,7 @@ void ProfilePatches_Arg(XUID xuid , const char* username, int controllerIndex)
 
 	/*
 	*/
-	printf("[Notice] %s xuid : %llu\n", username, xuid.m_id);
+	NotifyMsg("[Notice] %s xuid : %llu\n", username, xuid.m_id);
 	uint64_t xuidValue = xuid.m_id;
 	//uint64_t xuidValue = 0x12345678;
 	const char* xuid_string = utils::string::va("%Iu", xuidValue);
@@ -2951,22 +2990,22 @@ void GeneralPatches()
 	utils::hook::set<char>(CalcAdr(_adr.controllerStatData) + ( controllerIndexSize * 1 ) + (statsSourceSize * StatsSource::STATS_OFFLINE)	, 1 );	// controller 1 - offline stats
 
 	// init stats
-	printf("\n\n\n\n============================== [ 0 , Online ] ==============================\n\n\n\n");
+	NotifyMsg("\n\n\n\n============================== [ 0 , Online ] ==============================\n\n\n\n");
 	LiveStorage_StatsInit(0, 1, 0, StatsSource::STATS_ONLINE);
-	printf("\n\n\n\n============================== [ 0 , Offline ] ==============================\n\n\n\n");
+	NotifyMsg("\n\n\n\n============================== [ 0 , Offline ] ==============================\n\n\n\n");
 	LiveStorage_StatsInit(0, 1, 0, StatsSource::STATS_OFFLINE);
-	printf("\n\n\n\n============================== [ 1 , Online ] ==============================\n\n\n\n");
+	NotifyMsg("\n\n\n\n============================== [ 1 , Online ] ==============================\n\n\n\n");
 	LiveStorage_StatsInit(1, 1, 0, StatsSource::STATS_ONLINE);
-	printf("\n\n\n\n============================== [ 1 , Offline ] ==============================\n\n\n\n");
+	NotifyMsg("\n\n\n\n============================== [ 1 , Offline ] ==============================\n\n\n\n");
 	LiveStorage_StatsInit(1, 1, 0, StatsSource::STATS_OFFLINE);
 
-	printf("\n============================== [ After ] ==============================\n");
+	NotifyMsg("\n============================== [ After ] ==============================\n");
 	LiveStorage_DoWeHaveStatsForSource_f(0, StatsSource::STATS_ONLINE);
 	LiveStorage_DoWeHaveStatsForSource_f(0, StatsSource::STATS_OFFLINE);
 	LiveStorage_DoWeHaveStatsForSource_f(1, StatsSource::STATS_ONLINE);
 	LiveStorage_DoWeHaveStatsForSource_f(1, StatsSource::STATS_OFFLINE);
 
-	printf("\n============================== [ Stats Activate!! ] ==============================\n");
+	NotifyMsg("\n============================== [ Stats Activate!! ] ==============================\n");
 
 	// fix sp launch
 	//utils::hook::set<int>(CalcAdr(0x7FF6C8EE9D28), 0);	// fix sp launch * 44 8B 0D ?? ?? ?? ?? 33 D2 45 85 C9 ?? ?? 4C 8B 0x7FF6C8EE9D28
@@ -2981,7 +3020,7 @@ void GeneralPatches()
 //++++++++++++++++++++++++++++++
 void h00dairstylePatch()
 {
-	printf("\n============================== [ Before ] ==============================\n");
+	NotifyMsg("\n============================== [ Before ] ==============================\n");
 	LiveStorage_DoWeHaveStatsForSource_f(0, StatsSource::STATS_ONLINE);
 	LiveStorage_DoWeHaveStatsForSource_f(0, StatsSource::STATS_OFFLINE);
 	LiveStorage_DoWeHaveStatsForSource_f(1, StatsSource::STATS_ONLINE);
@@ -3000,7 +3039,7 @@ void h00dairstylePatch()
 //++++++++++++++++++++++++++++++
 void h00dairMixStylePatch(XUID xuid)
 {
-	printf("\n============================== [ Before ] ==============================\n");
+	NotifyMsg("\n============================== [ Before ] ==============================\n");
 	LiveStorage_DoWeHaveStatsForSource_f(0, StatsSource::STATS_ONLINE);
 	LiveStorage_DoWeHaveStatsForSource_f(0, StatsSource::STATS_OFFLINE);
 	LiveStorage_DoWeHaveStatsForSource_f(1, StatsSource::STATS_ONLINE);
@@ -3033,28 +3072,28 @@ void h00dairMixStylePatch(XUID xuid)
 	utils::hook::set<char>(CalcAdr(_adr.controllerStatData) + ( controllerIndexSize * 1 ) + (statsSourceSize * StatsSource::STATS_ONLINE )	, 1 );	// controller 1 - online stats
 	utils::hook::set<char>(CalcAdr(_adr.controllerStatData) + ( controllerIndexSize * 1 ) + (statsSourceSize * StatsSource::STATS_OFFLINE)	, 1 );	// controller 1 - offline stats
 	
-	//printf("\n============================== [ 0 , Online ] ==============================\n");
+	//NotifyMsg("\n============================== [ 0 , Online ] ==============================\n");
 	LiveStorage_StatsInit(0, 1, 0, StatsSource::STATS_ONLINE);
 	LiveStorage_ReadStats_f(0, StatsSource::STATS_ONLINE);
-	//printf("\n============================== [ 0 , Offline ] ==============================\n");
+	//NotifyMsg("\n============================== [ 0 , Offline ] ==============================\n");
 	//LiveStorage_StatsInit(0, 1, 0, StatsSource::STATS_OFFLINE);
-	//printf("\n============================== [ 1 , Online ] ==============================\n");
+	//NotifyMsg("\n============================== [ 1 , Online ] ==============================\n");
 	//LiveStorage_StatsInit(1, 1, 0, StatsSource::STATS_ONLINE);
 	//LiveStorage_ReadStats_f(1, StatsSource::STATS_ONLINE);
-	//printf("\n============================== [ 1 , Offline ] ==============================\n");
+	//NotifyMsg("\n============================== [ 1 , Offline ] ==============================\n");
 	//LiveStorage_StatsInit(1, 1, 0, StatsSource::STATS_OFFLINE);
 	//LiveStorage_ReadStats_f(1, StatsSource::STATS_OFFLINE);
 
 	
 
 
-	printf("\n============================== [ After ] ==============================\n");
+	NotifyMsg("\n============================== [ After ] ==============================\n");
 	LiveStorage_DoWeHaveStatsForSource_f(0, StatsSource::STATS_ONLINE);
 	LiveStorage_DoWeHaveStatsForSource_f(0, StatsSource::STATS_OFFLINE);
 	LiveStorage_DoWeHaveStatsForSource_f(1, StatsSource::STATS_ONLINE);
 	LiveStorage_DoWeHaveStatsForSource_f(1, StatsSource::STATS_OFFLINE);
 
-	printf("\n============================== [ Stats Activate!! ] ==============================\n");
+	NotifyMsg("\n============================== [ Stats Activate!! ] ==============================\n");
 
 	//dwGetLogOnStatus_h.clear();
 }
@@ -3069,7 +3108,7 @@ void SkuStylePatch(XUID xuid)
 {
 	//XUID xuid;
 	//xuid.RandomXUID();
-	printf("[Notice] xuid : %llu\n", xuid.m_id);
+	NotifyMsg("[Notice] xuid : %llu\n", xuid.m_id);
 
 	std::uint64_t xuid_magic = 0x11CB1243B8D7C31E;
 	std::uint64_t xuid_id = xuid.m_id * xuid.m_id;
@@ -3139,7 +3178,7 @@ void R_EndFrame_d()
 					
 					//utils::hook::jump(	CalcAdr(_adr.dwGetLogOnStatus)							, dwGetLogOnStatus_d);
 					//utils::hook::jump(	CalcAdr(_adr.dwLogOnHSM_base_HSM_IsInState)				, dwLogOnHSM_base_HSM_IsInState_d);
-					printf("** Success ** <R_EndFrame> Auth patched!\n");
+					NotifyMsg("** Success ** <R_EndFrame> Auth patched!\n");
 					_frameCountEnd = true;
 				}
 				break;
@@ -3395,7 +3434,7 @@ void GameSetup()
 	//	*utils::hook::nop(0x5EFA36E_b, 6);
 	//	utils::hook::call(0x5EFA36E_b, LoadLibraryW_Stub);*/
 
-	//printf("\n============================== [ Before ] ==============================\n");
+	//NotifyMsg("\n============================== [ Before ] ==============================\n");
 	//LiveStorage_DoWeHaveStatsForSource_f(0, StatsSource::STATS_ONLINE);
 	//LiveStorage_DoWeHaveStatsForSource_f(0, StatsSource::STATS_OFFLINE);
 	//LiveStorage_DoWeHaveStatsForSource_f(1, StatsSource::STATS_ONLINE);
@@ -3421,13 +3460,13 @@ void GameSetup()
 
 
 	// init stats
-	//printf("\n\n\n\n============================== [ 0 , Online ] ==============================\n\n\n\n");
+	//NotifyMsg("\n\n\n\n============================== [ 0 , Online ] ==============================\n\n\n\n");
 	//LiveStorage_StatsInit(0, 1, 0, StatsSource::STATS_ONLINE);
-	//printf("\n\n\n\n============================== [ 0 , Offline ] ==============================\n\n\n\n");
+	//NotifyMsg("\n\n\n\n============================== [ 0 , Offline ] ==============================\n\n\n\n");
 	//LiveStorage_StatsInit(0, 1, 0, StatsSource::STATS_OFFLINE);
-	//printf("\n\n\n\n============================== [ 1 , Online ] ==============================\n\n\n\n");
+	//NotifyMsg("\n\n\n\n============================== [ 1 , Online ] ==============================\n\n\n\n");
 	//LiveStorage_StatsInit(1, 1, 0, StatsSource::STATS_ONLINE);
-	//printf("\n\n\n\n============================== [ 1 , Offline ] ==============================\n\n\n\n");
+	//NotifyMsg("\n\n\n\n============================== [ 1 , Offline ] ==============================\n\n\n\n");
 	//LiveStorage_StatsInit(1, 1, 0, StatsSource::STATS_OFFLINE);
 
 
@@ -3466,10 +3505,10 @@ void SetupProfile()
 	{
 		_profileIniPath = _profileIniPath.substr(0, lastSlash + 1) + "profile.ini";
 	}
-	printf("[Notice] <Initialization> profile path : %s\n", _profileIniPath.c_str());
+	NotifyMsg("[Notice] <Initialization> profile path : %s\n", _profileIniPath.c_str());
 
 	_playerName = ReadIniPlayerName(_profileIniPath);
-	printf("[Notice] <Initialization> Username : %s\n", _playerName.c_str());
+	NotifyMsg("[Notice] <Initialization> Username : %s\n", _playerName.c_str());
 
 
 	TCHAR waFolderPath[MAX_PATH];
@@ -3477,7 +3516,7 @@ void SetupProfile()
 
 	_documentPath = (std::string)waFolderPath + "\\retdonetskmod";
 	ReplaceAll(_documentPath, "/", "\\");
-	printf("[Notice] <Initialization> Asset path : %s\n", _documentPath.c_str());
+	NotifyMsg("[Notice] <Initialization> Asset path : %s\n", _documentPath.c_str());
 }
 
 
@@ -3490,8 +3529,8 @@ HANDLE WINAPI LoadImageA_d(HINSTANCE hInst, LPCSTR name, UINT type, int cx, int 
 {
 	if (!_splashed)
 	{
-		printf("Splash screen image load detected!\n");
-		printf("[Notice] Base Address: 0x%p\n", g_Addrs.ModuleBase);
+		NotifyMsg("Splash screen image load detected!\n");
+		NotifyMsg("[Notice] Base Address: 0x%p\n", g_Addrs.ModuleBase);
 		SetupProfile();
 		GameSetup();
 		_splashed = true;
@@ -3515,17 +3554,17 @@ void HookExeModuleFunctions()
 	if (LoadImageA_h)
 	{
 		LoadImageA_b = reinterpret_cast<decltype(LoadImageA_b)>(LoadImageA_h->second);
-		printf("[Success] <Initialization> LoadImageA hooked successfully!\n");
+		NotifyMsg("[Success] <Initialization> LoadImageA hooked successfully!\n");
 	}
 	else
 	{
-		printf("[Failed] <Initialization> Failed to hook LoadImageA...\n");
+		NotifyMsg("[Failed] <Initialization> Failed to hook LoadImageA...\n");
 	}
 
-	printf("[Success] <Initialization> System initialization complete!\n");
-	printf("\n");
-	printf("\n");
-	printf("\n");
+	NotifyMsg("[Success] <Initialization> System initialization complete!\n");
+	NotifyMsg("\n");
+	NotifyMsg("\n");
+	NotifyMsg("\n");
 }
 
 
@@ -3739,27 +3778,27 @@ bool Cbuf_AddText(const char* fmt, ...)
 	vsprintf_s(cmd, fmt, ap);
 	va_end(ap);
 
-	printf("[Cbuf_AddText] <Notice> Formatted command: %s -> ", cmd);
+	NotifyMsg("[Cbuf_AddText] <Notice> Formatted command: %s -> ", cmd);
 
 	uintptr_t xpartydisband = CalcAdr(_adr.xpartydisband);
 	uintptr_t endlobby = CalcAdr(_adr.GScr_EndLobby);
 
 	try
 	{
-		printf("Exec buf manipulation -> ");
+		NotifyMsg("Exec buf manipulation -> ");
 		memcpy(post, (BYTE*)(xpartydisband), 512);
 		strcpy((char*)(xpartydisband), cmd);
-		printf("Call endlobby func -> ");
+		NotifyMsg("Call endlobby func -> ");
 		reinterpret_cast<void(*)(void*)>(endlobby)(nullptr);
 		memcpy((BYTE*)(xpartydisband), post, 512);
 	}
 	catch (...)
 	{
-		printf("<Error> Ex occurred during buf manipulation\n");
+		NotifyMsg("<Error> Ex occurred during buf manipulation\n");
 		return false;
 	}
 
-	printf("<OK> Success exec Cbuf.\n");
+	NotifyMsg("<OK> Success exec Cbuf.\n");
 	return true;
 }
 
@@ -3788,14 +3827,14 @@ void delayedStuff()
 		if (GetAsyncKeyState('H') & 0x8000)
 		{
 			const char* menuName = "MainMenu";
-			printf("LUI_OpenMenu(0, \"%s\", true, false, false);\n", menuName);
+			NotifyMsg("LUI_OpenMenu(0, \"%s\", true, false, false);\n", menuName);
 			LUI_OpenMenu(0, menuName, true, false, false);
 			Sleep(1000);
 		}
 		else if (GetAsyncKeyState('J') & 0x8000)
 		{
 			const char* menuName = "MainMenuOffline";
-			printf("LUI_OpenMenu(0, \"%s\", true, false, false);\n", menuName);
+			NotifyMsg("LUI_OpenMenu(0, \"%s\", true, false, false);\n", menuName);
 			LUI_OpenMenu(0, menuName, true, false, false);
 			Sleep(1000);
 		}
@@ -3843,11 +3882,6 @@ int CL_GetLocalClientSignInState_d(int controller_index)
 	}
 	return _hooks.CL_GetLocalClientSignInState_h.stub<int>(controller_index);
 }
-
-
-
-
-
 
 
 
