@@ -1447,6 +1447,184 @@ void GetAddressOffset(GameTitle title)
 			_adr.g_streamPosGlob_pos							= 0x7FF6C8EA1F20;
 		}
 		break;
+
+		case GameTitle::IW8_167:
+		{
+			_adr.DumpBase										= 0x7FF683520000;				// 0x7FF683521000
+
+			//	XUID
+			_adr.Sys_Microseconds								= _TEXT_SEC_LEN + 0x409B9D0;	// 0x7FF6875BC9D0	E8 ?? ?? ?? ?? 48 2B C3 48 8B C8
+			_adr.I_irand										= _TEXT_SEC_LEN + 0x3F3B0E0;	// 0x7FF68745C0E0	69 05 ?? ?? ?? ?? ?? ?? ?? ?? 2B D1 48 63 D2
+			_adr.GetRandSeed									= _TEXT_SEC_LEN + 0x3F3AE60;	// 0x7FF68745BE60	holdrand
+			
+			//	LUA	util
+			_adr.lua_pushboolean								= _TEXT_SEC_LEN + 0x7278EF0;	// 0x7FF68A799EF0	LUI_CoD_LuaCall_IsUserSignedInToLive
+			
+			//	First hooks / set
+			_adr.Content_DoWeHaveContentPack					= _TEXT_SEC_LEN + 0x3F422B0;	// 0x7FF6874632B0	LUI_CoD_LuaCall_IsMapPackOwned
+			_adr.LUI_COD_LuaCall_IsPremiumPlayer				= _TEXT_SEC_LEN + 0x69A6C80;	// 0x7FF689EC7C80	LUI_COD_LuaCall_IsPremiumPlayer
+			_adr.LUI_CoD_LuaCall_OfflineDataFetched				= _TEXT_SEC_LEN + 0x6B523C0;	// 0x7FF68A0733C0	LUI_CoD_LuaCall_OfflineDataFetched
+			_adr.LUI_CoD_LuaCall_IsLocalPlayAllowed				= _TEXT_SEC_LEN + 0x6996A30;	// 0x7FF689EB7A30	LUI_CoD_LuaCall_IsLocalPlayAllowed
+			_adr.Dvar_RegisterBool								= _TEXT_SEC_LEN + 0x3F4DF40;	// 0x7FF68746EF40	E8 ?? ?? ?? ?? 48 8B F0 F6 46
+			_adr.R_EndFrame										= _TEXT_SEC_LEN + 0x674C330;	// 0x7FF689C6D330	48 83 EC ?? E8 ?? ?? ?? ?? 48 8B 15 ?? ?? ?? ?? 45 33 D2
+			_adr.Live_IsInSystemlinkLobby						= _TEXT_SEC_LEN + 0x431AF70;	// 0x7FF68783BF70	LUI_CoD_LuaCall_InLobby
+
+			//	Sku style Patch
+			_adr.unk_PlatformPatch_flag1						= _TEXT_SEC_LEN + 0x15D09290;	// 0x7FF69922A290	%08x %08x %08x %08x -> under OBYTE(v594) = *(_BYTE *)(v174 + 756) ^ ((v175 ^ (v174 - 12)) * ((v175 ^ (v174 - 12)) + 2)) ^ ((unsigned __int16)((v175 ^ (v174 + 756)) * ((v175 ^ (v174 + 756)) + 2)) >> 8); -> xuid_patch_after_1_call_call -> xuid_patch_after_1_call or 80 3D ?? ?? ?? ?? 00 75 09 C7 01 00 00 00 00 33 C0 C3 8B 05 ?? ?? ?? ?? 89 01 48 8D 05 ?? ?? ??
+			_adr.unk_XUIDCheck1									= _TEXT_SEC_LEN + 0x199B98E0;	// 0x7FF69CEDA8E0	48 8D 1D ? ? ? ? 40 88 35
+			_adr.accountLoggedIn								= _TEXT_SEC_LEN + 0x15D08AE2;	// 0x7FF699229AE2	CurrentRegion_IssueFix2 -> ref call -> if ( !flag && *(_DWORD *)(func() + 16) == 1 )
+			_adr.CurrentRegion_IssueFix2_flag					= _adr.accountLoggedIn;			// 0x7FF699229AE2	LUI_CoD_LuaCall_GetCurrentRegion -> g_currentRegion -> ref+4D (or :loc_7FF6B1A13536) or {\n\"account_country\": \"%s\",\n\"ratings_board_min_age
+			_adr.s_isContentEnumerationFinished					= _TEXT_SEC_LEN + 0x15519580;	// 0x7FF698A3A580	80 3D ? ? ? ? ? 74 ? 48 89 7C 24
+			_adr.dvar_r_hudOutlineVRScopeThermalDarkColorFriend	= _TEXT_SEC_LEN + 0x1718F808;	// 0x7FF69A6B0808	OMROPMNPTT
+			_adr.xenonUserData_m_guardedUserData_signinState	= _TEXT_SEC_LEN + 0x15D08FC0;	// 0x7FF699229FC0	LUI_CoD_LuaCall_IsConnectedToFirstParty -> Live_IsSignedIn -> xenonUserData.m_guardedUserData[v1].signinState
+			
+			//	ProfilePatches_Arg
+			_adr.Live_GetUserData								= _TEXT_SEC_LEN + 0x3082740;	// 0x7FF6865A3740	LUI_CoD_LuaCall_IsUserAGuest -> Live_UserIsGuest -> Live_GetUserData_p
+			_adr.GamerProfile_LogInProfile						= _TEXT_SEC_LEN + 0x48E26A0;	// 0x7FF687E036A0	gamer_profile_input_type_updated
+			_adr.LoadSavedAchievements							= _TEXT_SEC_LEN + 0x2644DE0;	// 0x7FF685B65DE0	achievements.%X.chv & achievements_1.chv
+			
+			//	h00dair mix style Patch
+			_adr.Live_IsSignedIn								= _TEXT_SEC_LEN + 0x4CB51F0;	// 0x7FF6881D61F0	XBOXLIVE/MPNOTALLOWED or LUI_CoD_LuaCall_IsConnectedToFirstParty
+			_adr.LiveStorage_DoWeHaveStatsForSource				= _TEXT_SEC_LEN + 0x2D1FFBF0;	// 0x7FF6B0720BF0	LUI_CoD_LuaCall_DoWeHaveOnlineStats
+			_adr.controllerStatData								= _TEXT_SEC_LEN + 0x137A1F64;	// 0x7FF696CC2F64	LUI_CoD_LuaCall_StatsResetGetState -> LiveStorage_GetStatsResetState -> controllerResetStatData -> under arg controllerStatData
+			_adr.LiveStorage_StatsInit							= _TEXT_SEC_LEN + 0x3905EB0;	// 0x7FF686E26EB0	ddl/mp/playerdata.ddl
+			_adr.LiveStorage_ReadStats							= _TEXT_SEC_LEN + 0x39039B0;	// 0x7FF686E249B0	playerdata_available
+			
+			
+
+			
+
+
+
+			
+
+
+			_adr.CurrentRegion_IssueFix2						= _TEXT_SEC_LEN + 0x4CB31F0;	// 0x7FF6881D41F0	LUI_CoD_LuaCall_GetCurrentRegion -> g_currentRegion -> ref+4D (or :loc_7FF6B1A13536) or {\n\"account_country\": \"%s\",\n\"ratings_board_min_age
+			
+
+
+
+			
+
+			_adr.CL_GetLocalClientSignInState					= 0x7FF6B10C5090;	// E8 ? ? ? ? 85 C0 7F ? 8B CB
+			_adr.unk_SignInState								= 0x7FF6C7B29570;	// E8 ? ? ? ? 85 C0 7F ? 8B CB
+			_adr.Dvar_RegisterBool_call_1						= 0x7FF6B079828F;	// MPSSOTQQPM
+			_adr.Dvar_RegisterBool_call_2						= 0x7FF6B07982AA;	// LSTQOKLTRN
+			_adr.GamerProfile_SetDataByName						= 0x7FF6B16681A0;	// 48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC ? 8B F1 0F 29 74 24
+			_adr.holdrand										= 0x7FF6B71641E8;	// I_irand
+			_adr.Dvar_FindVarByName								= 0x7FF6B0D5A9E0;	// E8 ? ? ? ? 48 8B CB 48 63 50
+			_adr.LUI_OpenMenu									= 0x7FF6B3B04040;	// 48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC ? 41 8B F1 41 8B D8
+			
+			_adr.LUI_CoD_LuaCall_IsConnectedToGameServer		= 0x7FF6B36DF870;	// 
+			_adr.LUI_CoD_LuaCall_IsGameModeAllowed				= 0x7FF6B36E0720;	// 
+			_adr.LUI_CoD_LuaCall_IsGameModeAvailable			= 0x7FF6B36E0820;	// 
+			_adr.LUI_COD_LuaCall_IsPremiumPlayerReady			= 0x7FF6B36E8E80;	// 
+			_adr.LuaShared_LuaCall_IsDemoBuild					= 0x7FF6B36276B0;	// 
+			_adr.xpartydisband									= 0x7FF6B4367288;	// 
+			_adr.GScr_EndLobby									= 0x7FF6B0662370;	// 
+			_adr.dvar_force_offline_enabled						= 0x7FF6C90E88C8;	// MPSSOTQQPM
+			_adr.dvar_force_offline_menus						= 0x7FF6C90E88D0;	// LSTQOKLTRN
+			
+			_adr.Com_RegisterCommonDvars						= 0x7FF6B0797480;	// Com_RegisterCommonDvars
+			
+
+
+
+
+
+
+
+
+
+
+			//[*Notice] _ImageBase = 7FF6952B0000
+			//	[LUIMethod] DebugPrint = 7FF69B55D8E0 
+			
+			_adr.SEH_StringEd_GetString							= 0x7FF6B0D17BA0;	// NSSSRLRTOO -> SEH_StringEd_GetString_flag -> ref+6
+
+			_adr.Live_FakeUserSignIn							= _TEXT_SEC_LEN + 0x728560;		// 0x7FF683C49560	Platform_BeginAuth -> Platform_BeginAuth_exec -> platformConnectionState -> top ref -> return func(*(_QWORD *)(a1 + 8)); -> up func -> func(*(_DWORD *)(a1 + 8), v31, v32, a3, v34);
+			_adr.OnlineErrorManager_GetFenceState				= _TEXT_SEC_LEN + 0x4CCBA90;	// 0x7FF6881ECA90	LUI_CoD_LuaCall_GetBattleNetFenceState -> 
+			_adr.OnlineErrorManager_IsMpNotAllowed				= _TEXT_SEC_LEN + 0x4CB1790;	// 0x7FF6881D2790	OnlineErrorManager_GetFenceState ref+29 or 28 -> 
+			_adr.Platform_BeginAuth								= _TEXT_SEC_LEN + 0x4CB48C0;	// 0x7FF6881D58C0	OnlineErrorManager_IsMpNotAllowed ref+4A -> Platform_BeginAuth_exec -> bottom 1 up ref+4 ->
+			_adr.Live_UserSignIn								= _TEXT_SEC_LEN + 0x3F8D2E0;	// 0x7FF6874AE2E0	%s?timestamp=%llu&requestor=%s&account= -> Live_UserSignIn_exec_exec -> Live_UserSignIn_exec ref+12 or +13 -> ref+43 or +36 or XBOXLIVE/MPNOTALLOWED ref+15 -> up func last call ->
+			_adr.platformConnectionState						= _TEXT_SEC_LEN + 0x15D093E0;	// 0x7FF69922A3E0	Platform_BeginAuth -> Platform_BeginAuth_exec ->
+			_adr.platformId										= _TEXT_SEC_LEN + 0x15D09080;	// 0x7FF69922A080	Platform_BeginAuth -> under 1 func -> ref arg -> -8byte
+			_adr.dvar_xblive_loggedin							= _TEXT_SEC_LEN + 0x158C85A8;	// 0x7FF698DE95A8	dlog_event_server_playagain_start -> ref call -> upper v5 = func((unsigned int)flag); -> +8byte
+			
+			_adr.CurrentRegion_IssueFix1						= 0x7FF6B1A13ADE;	// LUI_CoD_LuaCall_GetCurrentRegion -> g_currentRegion -> ref+9
+			_adr.unk_BNetClass									= 0x7FF6CB13C860;	// 83 3D ? ? ? ? ? 74 ? B8 ? ? ? ? C3
+			_adr.GamerProfile_IsProfileLoggedIn					= 0x7FF6B1654460;	// hit_marker_3d
+			_adr.GetUsername									= 0x7FF6B0D9DB70;	// UnnamedPlayer
+			_adr.s_OnlineServicesFenceData_state				= 0x7FF6C87D3E18;	// LUI_CoD_LuaCall_OnlineServicesGetState -> Live_OnlineServicesFence_GetState
+			_adr.dwGetLogOnStatus								= 0x7FF6B3194330;	// 40 53 48 83 EC ? 48 63 C1 BA ? ? ? ? 48 69 D8 or login_event -> 
+			_adr.dwLogOnHSM_base_HSM_IsInState					= 0x7FF6AFC4B3C0;	// 40 53 48 83 EC ? 48 63 C1 BA ? ? ? ? 48 69 D8 or login_event -> 
+			_adr.Live_IsUserSignedIn							= 0x7FF6B0D9E0C0;	// 48 83 EC 28 E8 ?? ?? ?? ?? 85 C0 0F 9F C0 48 83 C4 28 C3 = x2
+			_adr.Live_IsUserSignedInToDemonware					= 0x7FF6B1107CA0;	// E8 ? ? ? ? 83 4F ? ? 48 8D 0D
+			_adr.Live_IsUserSignedInToBnet						= 0x7FF6B01A9E30;	// 48 89 5C 24 08 57 48 83 EC 20 48 63 F9 48 8B DA 8B CF E8 ?? ?? ?? ?? 84 C0
+			_adr.Live_IsUserSignedInToLive						= 0x7FF6B0D9E0E0;	// LUI_CoD_LuaCall_IsUserSignedInToDemonware
+			_adr.Live_OnlineServicesFence_GetState				= 0x7FF6B0077B30;	// LUI_CoD_LuaCall_OnlineServicesGetState
+			_adr.Live_SyncOnlineDataFence_GetState				= 0x7FF6B0078C40;	// LUI_CoD_LuaCall_ShouldBeInOnlineArea -> j_LUI_CoD_LuaCall_ShouldBeInOnlineArea
+
+			_adr.j_LUI_CoD_LuaCall_ShouldBeInOnlineArea			= 0x7FF6B3736780;	// LUI_CoD_LuaCall_ShouldBeInOnlineArea
+			_adr.LUI_CoD_LuaCall_IsUserSignedInToDemonware		= 0x7FF6B36E0760;	// LUI_CoD_LuaCall_IsUserSignedInToDemonware
+			_adr.LUI_CoD_LuaCall_IsBattleNetAuthReady			= 0x7FF6B36F8620;	// LUI_CoD_LuaCall_IsBattleNetAuthReady
+			_adr.LUI_COD_LuaCall_IsBattleNetLanOnly				= 0x7FF6B36E8B40;	// LUI_COD_LuaCall_IsBattleNetLanOnly
+			_adr.LUI_COD_LuaCall_IsBattleNet					= 0x7FF6B36E8820;	// LUI_COD_LuaCall_IsBattleNet
+			_adr.LUI_CoD_LuaCall_StatsResetGetState				= 0x7FF6B38A6260;	// LUI_CoD_LuaCall_StatsResetGetState
+			_adr.LUI_CoD_LuaCall_IsUserSignedInToLive			= 0x7FF6B36E0660;	// 
+			_adr.LUI_CoD_LuaCall_IsUserSignedInToDemonware		= 0x7FF6B36E0760;	// 
+			
+			_adr.LUI_ReportError								= 0x7FF6B3640DF0;	// 48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC ?? 48 8B FA 45 33 C0
+			_adr.lua_tolstring									= 0x7FF6B3FC0450;	// 48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC ?? 49 8B F8 8B DA 48 8B F1
+			
+			_adr.LUI_LuaCall_LUIGlobalPackage_DebugPrint		= 0x7FF6B363D8E0;	// DebugPrint
+			
+			_adr.Dvar_SetBool_Internal							= 0x7FF6B0D626E0;	// LUA_MENU/PATCH_UPDATE_SUCCESS
+
+			_adr.DDL_Lookup_MoveToNameHash						= 0x7FF6B3F8A8F0;	// 48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 30 45 8B D1 49 8B F0 48 8B DA 4C 8B D9 48 85 C9 0F 84
+			
+			_adr.LUIMethod_LUIGlobalPackage_list				= 0x7FF6CD96A330;	// 48 8B 1D ?? ?? ?? ?? 48 8B 3D ?? ?? ?? ?? 89 05
+			_adr.LUI_COD_LuaCall_HasActiveLocalClient			= 0x7FF6B36EA470;	// LUI_COD_LuaCall_HasActiveLocalClient
+			_adr.LUI_CoD_LuaCall_GetBattleNetConnectionState	= 0x7FF6B36F5150;	// LUI_CoD_LuaCall_GetBattleNetConnectionState
+			_adr.LuaShared_LuaCall_IsDevelopmentBuild			= 0x7FF6B3627670;	// LuaShared_LuaCall_IsDevelopmentBuild
+			_adr.LuaShared_LuaCall_IsConsoleGame				= 0x7FF6B36276F0;	// LuaShared_LuaCall_IsConsoleGame
+			_adr.lua_pushnumber									= 0x7FF6B3FBFC00;	// LUI_CoD_LuaCall_GetBattleNetConnectionState
+			_adr.lua_pushinteger								= 0x7FF6B3FBFAE0;	// LUI_CoD_LuaCall_OnlineServicesGetState
+			_adr.file_fopen										= 0x7FF6B41995BC;	// luaL_loadfile
+			_adr.file_fclose									= 0x7FF6B41999FC;	// luaL_loadfile
+			_adr.luaL_loadbuffer								= 0x7FF6B3FC5890;	// 4C 8B DC 53 57 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 4D 85 C9
+			_adr.unk_EncryptionKey								= 0x7FF6CD96A370;	// 48 33 15 ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 8B 57
+			_adr.luaL_openlib									= 0x7FF6B3FC3A10;	// 48 89 5C 24 ?? 55 56 41 56 48 83 EC ?? 48 8B 41
+			_adr.LiveStorage_GetActiveStatsSource				= 0x7FF6B0721390;	// ddl/mp/cpdata.ddl
+			_adr.DB_FindXAssetHeader							= 0x7FF6B057B8C0;	// E8 ?? ?? ?? ?? 44 8B C5 8D 4D
+			_adr.DB_LoadXFile									= 0x7FF6B05788B0;	// E8 ?? ?? ?? ?? 8B F8 33 ED 40 38 B3
+			_adr.luaL_loadfile									= 0x7FF6B3FC5A20;	// 40 53 57 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 84 24 ?? ?? ?? ?? 48 8B 41
+			_adr.CL_Mgr_IsControllerActive						= 0x7FF6AFB23D20;	// LUI_CoD_LuaCall_SetDesiredLobbyTeamSelection
+			_adr.CL_Mgr_GetClientFromController					= 0x7FF6AFB23B90;	// LUI_CoD_LuaCall_SetDesiredLobbyTeamSelection
+			_adr.Com_DDL_LoadAsset								= 0x7FF6B3F88080;	// ddl/mp/playerdata.ddl
+			_adr.LiveStorage_GetPlayerDataBufferForSource		= 0x7FF6B0723550;	// ddl/mp/playerdata.ddl
+			_adr.LiveStorage_BeginGame							= 0x7FF6B0727D40;	// playerdata_available
+			
+			
+			_adr.Load_ScriptFile								= 0x7FF6AFCC80B0;
+			_adr.DB_PatchMem_PushAsset							= 0x7FF6AFC467D0;
+			_adr.Load_Stream									= 0x7FF6B0584200;
+			_adr.DB_PushStreamPos								= 0x7FF6B0583DF0;
+			_adr.Load_XString									= 0x7FF6AFC997C0;
+			_adr.DB_PopStreamPos								= 0x7FF6B0583D40;
+			_adr.DB_PatchMem_PopAsset							= 0x7FF6AFC465A0;
+			_adr.DB_ReadXFile									= 0x7FF6B05796F0;
+			_adr.Load_ConstCharArray							= 0x7FF6AFC97650;
+			_adr.Load_byteArray									= 0x7FF6AFC99C00;
+			_adr.varScriptFile									= 0x7FF6B8997A40;
+			_adr.varXString										= 0x7FF6B8996240;
+			_adr.varConstChar									= 0x7FF6B8996230;
+			_adr.varbyte										= 0x7FF6B8996060;
+			_adr.AllocLoad_ConstChar							= 0x7FF6AFC956E0;
+			_adr.AllocLoad_byte									= 0x7FF6AFC959E0;
+			_adr.g_streamPosGlob_pos							= 0x7FF6C8EA1F20;
+		}
+		break;
 	}
 }
 
@@ -3073,7 +3251,7 @@ void h00dairMixStylePatch(XUID xuid)
 	//xuid2.RandomXUID();
 	//ProfilePatches_Arg(xuid2, GetUsername_d(), 1);
 
-	
+	//	if ( ( _gameTitle == GameTitle::IW8_157 ) || ( _gameTitle == GameTitle::IW8_167 ) )
 	int controllerIndexSize	= 228316;
 	int statsSourceSize		= 119368;
 
@@ -3247,7 +3425,7 @@ void GameSetup()
 	//_hooks.DB_LoadXFile_h.create(		CalcAdr(_adr.DB_LoadXFile)		, DB_LoadXFile_d);
 	//_hooks.Load_ScriptFile_h.create(	CalcAdr(_adr.Load_ScriptFile)	, Load_ScriptFile_d);
 	//_hooks.LUI_ReportError_h.create(	CalcAdr(_adr.LUI_ReportError)	, LUI_ReportError_d);
-	_hooks.Dvar_RegisterBool_h.create(	CalcAdr(_adr.Dvar_RegisterBool)	, Dvar_RegisterBool_d);
+	_hooks.Dvar_RegisterBool_h.create(							CalcAdr(_adr.Dvar_RegisterBool)							, Dvar_RegisterBool_d);
 	
 	utils::hook::jump(											CalcAdr(_adr.LUI_CoD_LuaCall_OfflineDataFetched)		, LUI_CoD_LuaCall_OfflineDataFetched_d);
 	utils::hook::jump(											CalcAdr(_adr.LUI_COD_LuaCall_IsPremiumPlayer)			, LUI_COD_LuaCall_IsPremiumPlayer_d);
@@ -3593,7 +3771,8 @@ void Initialization()
 {
 	Sleep(250);
 	//_gameTitle = GameTitle::IW8_138;
-	_gameTitle = GameTitle::IW8_157;
+	//_gameTitle = GameTitle::IW8_157;
+	_gameTitle = GameTitle::IW8_167;
 	GetAddressOffset(_gameTitle);
 
 	HookExeModuleFunctions();
