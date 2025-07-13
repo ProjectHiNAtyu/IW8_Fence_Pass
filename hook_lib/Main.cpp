@@ -655,6 +655,11 @@ typedef InvitationHSM_base_eHSMStates dwLogOnHSM_base_eHSMStates;
 
 
 
+// en : Text section start address reference
+// ja : テキストセクション開始長アドレス参照
+const uintptr_t _TEXT_SEC_LEN = 0x1000;
+
+
 // en : Image Base Address Reference
 // ja : イメージベースアドレス参照
 const auto _ImageBase = (uintptr_t)GetModuleHandle(nullptr);
@@ -750,6 +755,17 @@ bool _loadMainMenu = false;
 size_t CalcAdr(const size_t val)
 {
 	return _ImageBase + (val - _adr.DumpBase);
+}
+
+
+
+//++++++++++++++++++++++++++++++
+// en : In-game address calculation
+// ja : ゲーム内アドレス算出
+//++++++++++++++++++++++++++++++
+size_t CalcPtr(const size_t val)
+{
+	return _ImageBase + val;
 }
 
 
