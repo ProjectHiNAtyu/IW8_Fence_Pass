@@ -1485,7 +1485,7 @@ void GetAddressOffset(GameTitle title)
 			
 			//	h00dair mix style Patch
 			_adr.Live_IsSignedIn								= _TEXT_SEC_LEN + 0x4CB51F0;	// 0x7FF6881D61F0	XBOXLIVE/MPNOTALLOWED or LUI_CoD_LuaCall_IsConnectedToFirstParty
-			_adr.LiveStorage_DoWeHaveStatsForSource				= _TEXT_SEC_LEN + 0x2D1FFBF0;	// 0x7FF6B0720BF0	LUI_CoD_LuaCall_DoWeHaveOnlineStats
+			_adr.LiveStorage_DoWeHaveStatsForSource				= _TEXT_SEC_LEN + 0x3903450;	// 0x7FF686E24450	LUI_CoD_LuaCall_DoWeHaveOnlineStats
 			_adr.controllerStatData								= _TEXT_SEC_LEN + 0x137A1F64;	// 0x7FF696CC2F64	LUI_CoD_LuaCall_StatsResetGetState -> LiveStorage_GetStatsResetState -> controllerResetStatData -> under arg controllerStatData
 			_adr.LiveStorage_StatsInit							= _TEXT_SEC_LEN + 0x3905EB0;	// 0x7FF686E26EB0	ddl/mp/playerdata.ddl
 			_adr.LiveStorage_ReadStats							= _TEXT_SEC_LEN + 0x39039B0;	// 0x7FF686E249B0	playerdata_available
