@@ -2752,7 +2752,7 @@ void LoadSavedAchievements() { reinterpret_cast<void(*)()>(CalcPtr(_adr.LoadSave
 //++++++++++++++++++++++++++++++
 XenonUserData* Live_GetUserData(int controllerIndex)
 {
-	if (_gameTitle == GameTitle::IW8_157)
+	if ( (_gameTitle == GameTitle::IW8_157) || (_gameTitle == GameTitle::IW8_167))
 		return reinterpret_cast<XenonUserData * (*)(int)>(CalcPtr(_adr.Live_GetUserData))(controllerIndex);
 	else
 		return (XenonUserData*)CalcPtr(_adr.Live_GetUserData);
