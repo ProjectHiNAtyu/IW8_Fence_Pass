@@ -1643,7 +1643,7 @@ void GetAddressOffset(GameTitle title)
 //++++++++++++++++++++++++++++++
 XAssetHeader DB_FindXAssetHeader_f(XAssetType type, const char* given_name, int allow_create_default)
 {
-	auto func = reinterpret_cast<XAssetHeader(*)(XAssetType type, const char* given_name, int allow_create_default)>(CalcAdr(_adr.DB_FindXAssetHeader));
+	auto func = reinterpret_cast<XAssetHeader(*)(XAssetType type, const char* given_name, int allow_create_default)>(CalcPtr(_adr.DB_FindXAssetHeader));
 	return func(type, given_name, allow_create_default);
 }
 
@@ -1715,7 +1715,7 @@ int DB_LoadXFile_d(const char* zone_name, XZoneMemory* zone_mem, XAssetList* ass
 //++++++++++++++++++++++++++++++
 void lua_pushinteger(lua_State* L, int n)
 {
-	auto func = reinterpret_cast<void(*)(lua_State * L, int n)>(CalcAdr(_adr.lua_pushinteger));
+	auto func = reinterpret_cast<void(*)(lua_State * L, int n)>(CalcPtr(_adr.lua_pushinteger));
 	func(L, n);
 }
 
@@ -1727,7 +1727,7 @@ void lua_pushinteger(lua_State* L, int n)
 //++++++++++++++++++++++++++++++
 void lua_pushboolean(lua_State* luaVM, int boolean)
 {
-	auto func = reinterpret_cast<void(*)(lua_State * luaVM, int boolean)>(CalcAdr(_adr.lua_pushboolean));
+	auto func = reinterpret_cast<void(*)(lua_State * luaVM, int boolean)>(CalcPtr(_adr.lua_pushboolean));
 	func(luaVM, boolean);
 }
 
@@ -1739,7 +1739,7 @@ void lua_pushboolean(lua_State* luaVM, int boolean)
 //++++++++++++++++++++++++++++++
 const char* lua_tolstring(lua_State* lua_vm, int idx, std::size_t* len)
 {
-	auto func = reinterpret_cast<const char* (*)(lua_State * lua_vm, int idx, std::size_t * len)>(CalcAdr(_adr.lua_tolstring));
+	auto func = reinterpret_cast<const char* (*)(lua_State * lua_vm, int idx, std::size_t * len)>(CalcPtr(_adr.lua_tolstring));
 	return func(lua_vm, idx, len);
 }
 
@@ -1821,10 +1821,10 @@ int lua_pushboolean_return_true_d(lua_State* luaVM) { lua_pushboolean(luaVM, 1);
 //++++++++++++++++++++++++++++++
 void LUIMethod_LUIGlobalPackage_list_f()
 {
-	LUIMethod<void>* cmd = (LUIMethod<void>*)CalcAdr(_adr.LUIMethod_LUIGlobalPackage_list);
+	LUIMethod<void>* cmd = (LUIMethod<void>*)CalcPtr(_adr.LUIMethod_LUIGlobalPackage_list);
 	while (cmd)
 	{
-		auto func_name = cmd->get_name((std::uint64_t*)CalcAdr(_adr.unk_EncryptionKey));
+		auto func_name = cmd->get_name((std::uint64_t*)CalcPtr(_adr.unk_EncryptionKey));
 		if (func_name)
 		{
 			NotifyMsg("[Notice] <LUIMethod_LUIGlobalPackage_list> Get LUI Function %s.\n", func_name);
@@ -1985,7 +1985,7 @@ int luaL_loadbuffer_d(lua_State* s, const char* buf, size_t size, const char* na
 //++++++++++++++++++++++++++++++
 int luaL_loadbuffer_f(lua_State* s, const char* buf, size_t size, const char* name)
 {
-	auto func = reinterpret_cast<int(*)(lua_State * s, const char* buf, size_t size, const char* name)>(CalcAdr(_adr.luaL_loadbuffer));
+	auto func = reinterpret_cast<int(*)(lua_State * s, const char* buf, size_t size, const char* name)>(CalcPtr(_adr.luaL_loadbuffer));
 	return func(s, buf, size, name);
 }
 
@@ -2196,7 +2196,7 @@ void luaL_openlib_d(lua_State* s, const char* lib_name, const luaL_Reg* l, unsig
 //++++++++++++++++++++++++++++++
 int I_irand(int min, int max)
 {
-	auto func = reinterpret_cast<int(*)(int min, int max)>(CalcAdr(_adr.I_irand));
+	auto func = reinterpret_cast<int(*)(int min, int max)>(CalcPtr(_adr.I_irand));
 	return func(min, max);
 }
 
@@ -2208,7 +2208,7 @@ int I_irand(int min, int max)
 //++++++++++++++++++++++++++++++
 unsigned __int64 Sys_Microseconds()
 {
-	auto func = reinterpret_cast<unsigned __int64(*)(void)>(CalcAdr(_adr.Sys_Microseconds));
+	auto func = reinterpret_cast<unsigned __int64(*)(void)>(CalcPtr(_adr.Sys_Microseconds));
 	return func();
 }
 
@@ -2220,7 +2220,7 @@ unsigned __int64 Sys_Microseconds()
 //++++++++++++++++++++++++++++++
 unsigned int* GetRandSeed()
 {
-	auto func = reinterpret_cast<unsigned int* (*)(void)>(CalcAdr(_adr.GetRandSeed));
+	auto func = reinterpret_cast<unsigned int* (*)(void)>(CalcPtr(_adr.GetRandSeed));
 	return func();
 }
 
@@ -2353,7 +2353,7 @@ bool Dvar_SetBool_Internal_f(dvar_t** dvar, bool setFlag, int setValue, const ch
 		return false;
 	}
 
-	uintptr_t Adr_Dvar_SetBool_Internal = CalcAdr(_adr.Dvar_SetBool_Internal);
+	uintptr_t Adr_Dvar_SetBool_Internal = CalcPtr(_adr.Dvar_SetBool_Internal);
 
 	auto Dvar_SetBool_Internal = reinterpret_cast<void(*)(dvar_t * dvar, bool value, int setSource)>(Adr_Dvar_SetBool_Internal);
 
@@ -2463,7 +2463,7 @@ void Load_ScriptFile_d(DBStreamStart streamStart)
     {
 		_hooks.Load_ScriptFile_h.stub<void>(streamStart);
 
-        ScriptFile** varScriptFile = reinterpret_cast<ScriptFile**>(CalcAdr(_adr.varScriptFile));
+        ScriptFile** varScriptFile = reinterpret_cast<ScriptFile**>(CalcPtr(_adr.varScriptFile));
 
         ScriptFile* scriptfile = *varScriptFile;
 
@@ -2512,22 +2512,22 @@ void Load_ScriptFile_d(DBStreamStart streamStart)
     else
     {
 
-	    auto DB_PatchMem_PushAsset	= reinterpret_cast<void(*)(size_t len, ScriptFile *script)>(            CalcAdr( _adr.DB_PatchMem_PushAsset ) );
-	    auto Load_Stream			= reinterpret_cast<void(*)(int streamStart, void *ptr, size_t size)>(   CalcAdr( _adr.Load_Stream           ) );
-	    auto DB_PushStreamPos		= reinterpret_cast<void(*)(int param_1)>(                               CalcAdr( _adr.DB_PushStreamPos      ) );
-	    auto Load_XString			= reinterpret_cast<void(*)(int param_1)>(                               CalcAdr( _adr.Load_XString          ) );
-	    auto DB_PopStreamPos		= reinterpret_cast<void(*)(void)>(                                      CalcAdr( _adr.DB_PopStreamPos       ) );
-	    auto DB_PatchMem_PopAsset	= reinterpret_cast<void(*)(void)>(                                      CalcAdr( _adr.DB_PatchMem_PopAsset  ) );
-	    auto DB_ReadXFile			= reinterpret_cast<void(*)(void *ptr, size_t size)>(                    CalcAdr( _adr.DB_ReadXFile          ) );
-	    auto Load_ConstCharArray	= reinterpret_cast<void(*)(void* ptr, size_t size)>(					CalcAdr( _adr.Load_ConstCharArray   ) );
-	    auto Load_byteArray			= reinterpret_cast<void(*)(void* ptr, size_t size)>(					CalcAdr( _adr.Load_byteArray        ) );
-	    ScriptFile **varScriptFile	= reinterpret_cast<ScriptFile **>(                                      CalcAdr( _adr.varScriptFile         ) );
-	    char **varXString			= reinterpret_cast<char **>(                                            CalcAdr( _adr.varXString            ) );
-	    char **varConstChar			= reinterpret_cast<char **>(                                            CalcAdr( _adr.varConstChar          ) );
-	    char **varbyte				= reinterpret_cast<char **>(                                            CalcAdr( _adr.varbyte               ) );
-	    char** AllocLoad_ConstChar	= reinterpret_cast<char **>(										    CalcAdr( _adr.AllocLoad_ConstChar   ) );
-	    char** AllocLoad_byte		= reinterpret_cast<char **>(											CalcAdr( _adr.AllocLoad_byte        ) );
-        char** g_streamPosGlob_pos = reinterpret_cast<char**>(                                              CalcAdr( _adr.g_streamPosGlob_pos   ) );
+	    auto DB_PatchMem_PushAsset	= reinterpret_cast<void(*)(size_t len, ScriptFile *script)>(            CalcPtr( _adr.DB_PatchMem_PushAsset ) );
+	    auto Load_Stream			= reinterpret_cast<void(*)(int streamStart, void *ptr, size_t size)>(   CalcPtr( _adr.Load_Stream           ) );
+	    auto DB_PushStreamPos		= reinterpret_cast<void(*)(int param_1)>(                               CalcPtr( _adr.DB_PushStreamPos      ) );
+	    auto Load_XString			= reinterpret_cast<void(*)(int param_1)>(                               CalcPtr( _adr.Load_XString          ) );
+	    auto DB_PopStreamPos		= reinterpret_cast<void(*)(void)>(                                      CalcPtr( _adr.DB_PopStreamPos       ) );
+	    auto DB_PatchMem_PopAsset	= reinterpret_cast<void(*)(void)>(                                      CalcPtr( _adr.DB_PatchMem_PopAsset  ) );
+	    auto DB_ReadXFile			= reinterpret_cast<void(*)(void *ptr, size_t size)>(                    CalcPtr( _adr.DB_ReadXFile          ) );
+	    auto Load_ConstCharArray	= reinterpret_cast<void(*)(void* ptr, size_t size)>(					CalcPtr( _adr.Load_ConstCharArray   ) );
+	    auto Load_byteArray			= reinterpret_cast<void(*)(void* ptr, size_t size)>(					CalcPtr( _adr.Load_byteArray        ) );
+	    ScriptFile **varScriptFile	= reinterpret_cast<ScriptFile **>(                                      CalcPtr( _adr.varScriptFile         ) );
+	    char **varXString			= reinterpret_cast<char **>(                                            CalcPtr( _adr.varXString            ) );
+	    char **varConstChar			= reinterpret_cast<char **>(                                            CalcPtr( _adr.varConstChar          ) );
+	    char **varbyte				= reinterpret_cast<char **>(                                            CalcPtr( _adr.varbyte               ) );
+	    char** AllocLoad_ConstChar	= reinterpret_cast<char **>(										    CalcPtr( _adr.AllocLoad_ConstChar   ) );
+	    char** AllocLoad_byte		= reinterpret_cast<char **>(											CalcPtr( _adr.AllocLoad_byte        ) );
+        char** g_streamPosGlob_pos = reinterpret_cast<char**>(                                              CalcPtr( _adr.g_streamPosGlob_pos   ) );
 
 
         char* backup;
@@ -2734,7 +2734,7 @@ bool Content_DoWeHaveContentPack_d(int controllerIndex) { return true; }
 // en : Logs in to the gamer profile with the specified controller index. (execute the function)
 // ja : 指定したコントローラーインデックスのゲーマープロフィールに対してログインする ( 関数を実行する )
 //++++++++++++++++++++++++++++++
-void GamerProfile_LogInProfile(int controller) { reinterpret_cast<void(*)(int)>(CalcAdr(_adr.GamerProfile_LogInProfile))(controller); }
+void GamerProfile_LogInProfile(int controller) { reinterpret_cast<void(*)(int)>(CalcPtr(_adr.GamerProfile_LogInProfile))(controller); }
 
 
 
@@ -2742,7 +2742,7 @@ void GamerProfile_LogInProfile(int controller) { reinterpret_cast<void(*)(int)>(
 // en : Load a saved achievement (execute the function)
 // ja : セーブ済み実績をロードする ( 関数を実行する )
 //++++++++++++++++++++++++++++++
-void LoadSavedAchievements() { reinterpret_cast<void(*)()>(CalcAdr(_adr.LoadSavedAchievements))(); }
+void LoadSavedAchievements() { reinterpret_cast<void(*)()>(CalcPtr(_adr.LoadSavedAchievements))(); }
 
 
 
@@ -2753,9 +2753,9 @@ void LoadSavedAchievements() { reinterpret_cast<void(*)()>(CalcAdr(_adr.LoadSave
 XenonUserData* Live_GetUserData(int controllerIndex)
 {
 	if (_gameTitle == GameTitle::IW8_157)
-		return reinterpret_cast<XenonUserData * (*)(int)>(CalcAdr(_adr.Live_GetUserData))(controllerIndex);
+		return reinterpret_cast<XenonUserData * (*)(int)>(CalcPtr(_adr.Live_GetUserData))(controllerIndex);
 	else
-		return (XenonUserData*)CalcAdr(_adr.Live_GetUserData);
+		return (XenonUserData*)CalcPtr(_adr.Live_GetUserData);
 }
 
 
@@ -2764,7 +2764,7 @@ XenonUserData* Live_GetUserData(int controllerIndex)
 // en : Initializes the statistics source for the specified controller index. (execute the function)
 // ja : 指定したコントローラーインデックスの統計ソースを初期化する ( 関数を実行する )
 //++++++++++++++++++++++++++++++
-void LiveStorage_StatsInit(const int controllerIndex, bool clear, bool freshStart, StatsSource statsSource) { reinterpret_cast<void(*)(const int, bool, bool, StatsSource)>(CalcAdr(_adr.LiveStorage_StatsInit))(controllerIndex, clear, freshStart, statsSource); }
+void LiveStorage_StatsInit(const int controllerIndex, bool clear, bool freshStart, StatsSource statsSource) { reinterpret_cast<void(*)(const int, bool, bool, StatsSource)>(CalcPtr(_adr.LiveStorage_StatsInit))(controllerIndex, clear, freshStart, statsSource); }
 
 
 
@@ -2775,7 +2775,7 @@ void LiveStorage_StatsInit(const int controllerIndex, bool clear, bool freshStar
 void LiveStorage_ReadStats_f(int controllerIndex , StatsSource stats)
 {
 	NotifyMsg("[Notice] <LiveStorage_ReadStats> called func , idx %d , src %d\n", controllerIndex, stats);
-	auto func = reinterpret_cast<void(*)(int controllerIndex, StatsSource stats)>(CalcAdr(_adr.LiveStorage_ReadStats));
+	auto func = reinterpret_cast<void(*)(int controllerIndex, StatsSource stats)>(CalcPtr(_adr.LiveStorage_ReadStats));
 	func(controllerIndex, stats);
 }
 
@@ -2787,7 +2787,7 @@ void LiveStorage_ReadStats_f(int controllerIndex , StatsSource stats)
 //++++++++++++++++++++++++++++++
 bool LiveStorage_DoWeHaveStatsForSource_f(const int controllerIndex, StatsSource statsSource)
 {
-	auto func = reinterpret_cast<bool(*)(const int controllerIndex, StatsSource statsSource)>(CalcAdr(_adr.LiveStorage_DoWeHaveStatsForSource));
+	auto func = reinterpret_cast<bool(*)(const int controllerIndex, StatsSource statsSource)>(CalcPtr(_adr.LiveStorage_DoWeHaveStatsForSource));
 	bool result = func(controllerIndex, statsSource);
 	NotifyMsg("[Notice] <LiveStorage_DoWeHaveStatsForSource> : idx %d , src %s = %s\n", controllerIndex, (statsSource == StatsSource::STATS_ONLINE ? "Online" : "Offline"), (result ? "Exist!" : "None..."));
 	return result;
@@ -2927,7 +2927,7 @@ const char* SEH_StringEd_GetString_d(const char* str) { return str; }
 // en : Get the user's sign-in status
 // ja : ユーザーのサインイン状態を取得する
 //++++++++++++++++++++++++++++++
-uintptr_t Live_GetUserSigninState() { return CalcAdr(_adr.xenonUserData_m_guardedUserData_signinState); }
+uintptr_t Live_GetUserSigninState() { return CalcPtr(_adr.xenonUserData_m_guardedUserData_signinState); }
 
 
 
@@ -2939,7 +2939,7 @@ void LiveStorage_BeginGame_f(LocalClientNum_t localClientNum)
 {
 	NotifyMsg("[Notice] <LiveStorage_BeginGame> called func , client %d\n", localClientNum == LocalClientNum_t::LOCAL_CLIENT_0 ? 0 : 1);
 
-	auto func = reinterpret_cast<void(*)(LocalClientNum_t localClientNum)>(CalcAdr(_adr.LiveStorage_BeginGame));
+	auto func = reinterpret_cast<void(*)(LocalClientNum_t localClientNum)>(CalcPtr(_adr.LiveStorage_BeginGame));
 	func(localClientNum);
 }
 
@@ -3016,8 +3016,8 @@ void LiveStorage_GetPlayerDataBufferForSource_d(int controllerIndex, int a2, Sta
 //++++++++++++++++++++++++++++++
 void PlatformPatches()
 {
-	utils::hook::set<int>(CalcAdr(_adr.xenonUserData_m_guardedUserData_signinState), 2);
-	utils::hook::set<bool>(CalcAdr(_adr.xenonUserData_m_guardedUserData_signinState) + 0x2D0, true);
+	utils::hook::set<int>(CalcPtr(_adr.xenonUserData_m_guardedUserData_signinState), 2);
+	utils::hook::set<bool>(CalcPtr(_adr.xenonUserData_m_guardedUserData_signinState) + 0x2D0, true);
 
 	/*
 		these two patches are optional, but prevent battle net connectivity issues if previous account info is stored,
@@ -3025,8 +3025,8 @@ void PlatformPatches()
 		Computer\HKEY_CURRENT_USER\SOFTWARE\Blizzard Entertainment\Battle.net\Launch Options\FORE
 	*/
 
-	utils::hook::nop(CalcAdr(_adr.CurrentRegion_IssueFix1), 5);
-	utils::hook::nop(CalcAdr(_adr.CurrentRegion_IssueFix2), 5);
+	utils::hook::nop(CalcPtr(_adr.CurrentRegion_IssueFix1), 5);
+	utils::hook::nop(CalcPtr(_adr.CurrentRegion_IssueFix2), 5);
 
 }
 
@@ -3178,10 +3178,10 @@ void GeneralPatches()
 		statsSourceSize		= 105904;
 	}
 	
-	utils::hook::set<char>(CalcAdr(_adr.controllerStatData) + ( controllerIndexSize * 0 ) + (statsSourceSize * StatsSource::STATS_ONLINE )	, 1 );	// controller 0 - online stats
-	utils::hook::set<char>(CalcAdr(_adr.controllerStatData) + ( controllerIndexSize * 0 ) + (statsSourceSize * StatsSource::STATS_OFFLINE)	, 1 );	// controller 0 - offline stats
-	utils::hook::set<char>(CalcAdr(_adr.controllerStatData) + ( controllerIndexSize * 1 ) + (statsSourceSize * StatsSource::STATS_ONLINE )	, 1 );	// controller 1 - online stats
-	utils::hook::set<char>(CalcAdr(_adr.controllerStatData) + ( controllerIndexSize * 1 ) + (statsSourceSize * StatsSource::STATS_OFFLINE)	, 1 );	// controller 1 - offline stats
+	utils::hook::set<char>(CalcPtr(_adr.controllerStatData) + ( controllerIndexSize * 0 ) + (statsSourceSize * StatsSource::STATS_ONLINE )	, 1 );	// controller 0 - online stats
+	utils::hook::set<char>(CalcPtr(_adr.controllerStatData) + ( controllerIndexSize * 0 ) + (statsSourceSize * StatsSource::STATS_OFFLINE)	, 1 );	// controller 0 - offline stats
+	utils::hook::set<char>(CalcPtr(_adr.controllerStatData) + ( controllerIndexSize * 1 ) + (statsSourceSize * StatsSource::STATS_ONLINE )	, 1 );	// controller 1 - online stats
+	utils::hook::set<char>(CalcPtr(_adr.controllerStatData) + ( controllerIndexSize * 1 ) + (statsSourceSize * StatsSource::STATS_OFFLINE)	, 1 );	// controller 1 - offline stats
 
 	// init stats
 	NotifyMsg("\n\n\n\n============================== [ 0 , Online ] ==============================\n\n\n\n");
@@ -3202,7 +3202,7 @@ void GeneralPatches()
 	NotifyMsg("\n============================== [ Stats Activate!! ] ==============================\n");
 
 	// fix sp launch
-	//utils::hook::set<int>(CalcAdr(0x7FF6C8EE9D28), 0);	// fix sp launch * 44 8B 0D ?? ?? ?? ?? 33 D2 45 85 C9 ?? ?? 4C 8B 0x7FF6C8EE9D28
+	//utils::hook::set<int>(CalcPtr(0x7FF6C8EE9D28), 0);	// fix sp launch * 44 8B 0D ?? ?? ?? ?? 33 D2 45 85 C9 ?? ?? 4C 8B 0x7FF6C8EE9D28
 	
 }
 
@@ -3239,10 +3239,10 @@ void h00dairMixStylePatch(XUID xuid)
 	LiveStorage_DoWeHaveStatsForSource_f(1, StatsSource::STATS_ONLINE);
 	LiveStorage_DoWeHaveStatsForSource_f(1, StatsSource::STATS_OFFLINE);
 	
-	utils::hook::set<int>(CalcAdr(_adr.xenonUserData_m_guardedUserData_signinState), 2);
-	utils::hook::set<bool>(CalcAdr(_adr.xenonUserData_m_guardedUserData_signinState) + 0x2D0, true);
+	utils::hook::set<int>(CalcPtr(_adr.xenonUserData_m_guardedUserData_signinState), 2);
+	utils::hook::set<bool>(CalcPtr(_adr.xenonUserData_m_guardedUserData_signinState) + 0x2D0, true);
 
-	//_hooks.Live_IsSignedIn_h.create(CalcAdr(_adr.Live_IsSignedIn), Live_IsSignedIn_d);
+	//_hooks.Live_IsSignedIn_h.create(CalcPtr(_adr.Live_IsSignedIn), Live_IsSignedIn_d);
 	
 	ProfilePatches_Arg(xuid, GetUsername_d(), 0);
 	//ProfilePatches_Arg(xuid, GetUsername_d(), 1);
@@ -3261,10 +3261,10 @@ void h00dairMixStylePatch(XUID xuid)
 		statsSourceSize		= 105904;
 	}
 	
-	utils::hook::set<char>(CalcAdr(_adr.controllerStatData) + ( controllerIndexSize * 0 ) + (statsSourceSize * StatsSource::STATS_ONLINE )	, 1 );	// controller 0 - online stats
-	utils::hook::set<char>(CalcAdr(_adr.controllerStatData) + ( controllerIndexSize * 0 ) + (statsSourceSize * StatsSource::STATS_OFFLINE)	, 1 );	// controller 0 - offline stats
-	utils::hook::set<char>(CalcAdr(_adr.controllerStatData) + ( controllerIndexSize * 1 ) + (statsSourceSize * StatsSource::STATS_ONLINE )	, 1 );	// controller 1 - online stats
-	utils::hook::set<char>(CalcAdr(_adr.controllerStatData) + ( controllerIndexSize * 1 ) + (statsSourceSize * StatsSource::STATS_OFFLINE)	, 1 );	// controller 1 - offline stats
+	utils::hook::set<char>(CalcPtr(_adr.controllerStatData) + ( controllerIndexSize * 0 ) + (statsSourceSize * StatsSource::STATS_ONLINE )	, 1 );	// controller 0 - online stats
+	utils::hook::set<char>(CalcPtr(_adr.controllerStatData) + ( controllerIndexSize * 0 ) + (statsSourceSize * StatsSource::STATS_OFFLINE)	, 1 );	// controller 0 - offline stats
+	utils::hook::set<char>(CalcPtr(_adr.controllerStatData) + ( controllerIndexSize * 1 ) + (statsSourceSize * StatsSource::STATS_ONLINE )	, 1 );	// controller 1 - online stats
+	utils::hook::set<char>(CalcPtr(_adr.controllerStatData) + ( controllerIndexSize * 1 ) + (statsSourceSize * StatsSource::STATS_OFFLINE)	, 1 );	// controller 1 - offline stats
 	
 	//NotifyMsg("\n============================== [ 0 , Online ] ==============================\n");
 	LiveStorage_StatsInit(0, 1, 0, StatsSource::STATS_ONLINE);
@@ -3307,24 +3307,24 @@ void SkuStylePatch(XUID xuid)
 	std::uint64_t xuid_magic = 0x11CB1243B8D7C31E;
 	std::uint64_t xuid_id = xuid.m_id * xuid.m_id;
 
-	utils::hook::set(CalcAdr(_adr.unk_PlatformPatch_flag1), 1);
+	utils::hook::set(CalcPtr(_adr.unk_PlatformPatch_flag1), 1);
 
-	utils::hook::set<uintptr_t>(CalcAdr(_adr.unk_XUIDCheck1), xuid_magic | xuid_id);
+	utils::hook::set<uintptr_t>(CalcPtr(_adr.unk_XUIDCheck1), xuid_magic | xuid_id);
 
-	utils::hook::set<bool>(CalcAdr(_adr.CurrentRegion_IssueFix2_flag), true);
+	utils::hook::set<bool>(CalcPtr(_adr.CurrentRegion_IssueFix2_flag), true);
 
 	// utils::hook::set<uintptr_t>(0x17AF9960_b, 0x11CB1243B8D7C31E | (xuid.m_id * xuid.m_id) / 6); // s_presenceData After 1.44 swaped Live_GetUserData()
 
-	utils::hook::set<int>(CalcAdr(_adr.s_isContentEnumerationFinished), 1);
+	utils::hook::set<int>(CalcPtr(_adr.s_isContentEnumerationFinished), 1);
 	// utils::hook::set(0x17AF98A0_b, 2);	// Live_IsUserSignedIn -> CL_GetLocalClientSignInState -> After 1,44 swaped Live_GetUserData()
-	utils::hook::set(CalcAdr(_adr.unk_PlatformPatch_flag1), 1);
+	utils::hook::set(CalcPtr(_adr.unk_PlatformPatch_flag1), 1);
 
-	utils::hook::set<byte>(CalcAdr(_adr.dvar_r_hudOutlineVRScopeThermalDarkColorFriend), 0);
+	utils::hook::set<byte>(CalcPtr(_adr.dvar_r_hudOutlineVRScopeThermalDarkColorFriend), 0);
 
 	// utils::hook::set<char>(*reinterpret_cast<uintptr_t*>(0x15DDB818_b) + 0x28, 1); // force_offline_enabled
 	// utils::hook::set<char>(*reinterpret_cast<uintptr_t*>(0x15DDB820_b) + 0x28, 1); // force_offline_menus
 
-	uintptr_t bnet_class = CalcAdr(_adr.xenonUserData_m_guardedUserData_signinState);//Live_GetUserSigninState();
+	uintptr_t bnet_class = CalcPtr(_adr.xenonUserData_m_guardedUserData_signinState);//Live_GetUserSigninState();
 	*(uintptr_t*)(bnet_class) = 2; // brings us to "connect to services" screen
 	*(bool*)(bnet_class + 0x2D0) = true;
 
@@ -3351,27 +3351,27 @@ void R_EndFrame_d()
 					xuid.RandomXUID();
 					SkuStylePatch(xuid);
 
-					utils::hook::jump(	CalcAdr(_adr.Live_IsSignedIn)							, Live_IsSignedIn_d);
+					utils::hook::jump(	CalcPtr(_adr.Live_IsSignedIn)							, Live_IsSignedIn_d);
 					/*
-					utils::hook::jump(	CalcAdr(_adr.Live_IsUserSignedIn)						, Live_IsUserSignedIn_d);
-					utils::hook::jump(	CalcAdr(_adr.GamerProfile_IsProfileLoggedIn)			, GamerProfile_IsProfileLoggedIn_d);
-					utils::hook::jump(	CalcAdr(_adr.Live_IsUserSignedInToBnet)					, Live_IsUserSignedInToBnet_d);
-					utils::hook::jump(	CalcAdr(_adr.Live_IsUserSignedInToDemonware)			, Live_IsUserSignedInToDemonware_d);
-					utils::hook::jump(	CalcAdr(_adr.LUI_CoD_LuaCall_IsUserSignedInToLive)		, LUI_CoD_LuaCall_IsUserSignedInToLive_d);
-					utils::hook::jump(	CalcAdr(_adr.LUI_CoD_LuaCall_IsUserSignedInToDemonware)	, LUI_CoD_LuaCall_IsUserSignedInToDemonware_d);
-					utils::hook::jump(	CalcAdr(_adr.LUI_CoD_LuaCall_IsBattleNetAuthReady)		, LUI_CoD_LuaCall_IsBattleNetAuthReady_d);
-					utils::hook::jump(	CalcAdr(_adr.LUI_COD_LuaCall_IsBattleNet)				, LUI_COD_LuaCall_IsBattleNet_d);
-					utils::hook::jump(	CalcAdr(_adr.LUI_CoD_LuaCall_IsConnectedToGameServer)	, LUI_CoD_LuaCall_IsConnectedToGameServer_d);
-					utils::hook::jump(	CalcAdr(_adr.LUI_CoD_LuaCall_IsGameModeAvailable)		, LUI_CoD_LuaCall_IsGameModeAvailable_d);
-					utils::hook::jump(	CalcAdr(_adr.LUI_CoD_LuaCall_IsGameModeAllowed)			, LUI_CoD_LuaCall_IsGameModeAllowed_d);
-					utils::hook::jump(	CalcAdr(_adr.LUI_COD_LuaCall_HasActiveLocalClient)		, LUI_COD_LuaCall_HasActiveLocalClient_d);
-					utils::hook::jump(	CalcAdr(_adr.GetUsername)								, GetUsername_d);
+					utils::hook::jump(	CalcPtr(_adr.Live_IsUserSignedIn)						, Live_IsUserSignedIn_d);
+					utils::hook::jump(	CalcPtr(_adr.GamerProfile_IsProfileLoggedIn)			, GamerProfile_IsProfileLoggedIn_d);
+					utils::hook::jump(	CalcPtr(_adr.Live_IsUserSignedInToBnet)					, Live_IsUserSignedInToBnet_d);
+					utils::hook::jump(	CalcPtr(_adr.Live_IsUserSignedInToDemonware)			, Live_IsUserSignedInToDemonware_d);
+					utils::hook::jump(	CalcPtr(_adr.LUI_CoD_LuaCall_IsUserSignedInToLive)		, LUI_CoD_LuaCall_IsUserSignedInToLive_d);
+					utils::hook::jump(	CalcPtr(_adr.LUI_CoD_LuaCall_IsUserSignedInToDemonware)	, LUI_CoD_LuaCall_IsUserSignedInToDemonware_d);
+					utils::hook::jump(	CalcPtr(_adr.LUI_CoD_LuaCall_IsBattleNetAuthReady)		, LUI_CoD_LuaCall_IsBattleNetAuthReady_d);
+					utils::hook::jump(	CalcPtr(_adr.LUI_COD_LuaCall_IsBattleNet)				, LUI_COD_LuaCall_IsBattleNet_d);
+					utils::hook::jump(	CalcPtr(_adr.LUI_CoD_LuaCall_IsConnectedToGameServer)	, LUI_CoD_LuaCall_IsConnectedToGameServer_d);
+					utils::hook::jump(	CalcPtr(_adr.LUI_CoD_LuaCall_IsGameModeAvailable)		, LUI_CoD_LuaCall_IsGameModeAvailable_d);
+					utils::hook::jump(	CalcPtr(_adr.LUI_CoD_LuaCall_IsGameModeAllowed)			, LUI_CoD_LuaCall_IsGameModeAllowed_d);
+					utils::hook::jump(	CalcPtr(_adr.LUI_COD_LuaCall_HasActiveLocalClient)		, LUI_COD_LuaCall_HasActiveLocalClient_d);
+					utils::hook::jump(	CalcPtr(_adr.GetUsername)								, GetUsername_d);
 					*/
 
 					h00dairMixStylePatch(xuid);
 					
-					//utils::hook::jump(	CalcAdr(_adr.dwGetLogOnStatus)							, dwGetLogOnStatus_d);
-					//utils::hook::jump(	CalcAdr(_adr.dwLogOnHSM_base_HSM_IsInState)				, dwLogOnHSM_base_HSM_IsInState_d);
+					//utils::hook::jump(	CalcPtr(_adr.dwGetLogOnStatus)							, dwGetLogOnStatus_d);
+					//utils::hook::jump(	CalcPtr(_adr.dwLogOnHSM_base_HSM_IsInState)				, dwLogOnHSM_base_HSM_IsInState_d);
 					NotifyMsg("** Success ** <R_EndFrame> Auth patched!\n");
 					_frameCountEnd = true;
 				}
@@ -3402,9 +3402,9 @@ void R_EndFrame_d()
 //++++++++++++++++++++++++++++++
 void GameStart()
 {
-	_hooks.R_EndFrame_h.create(									CalcAdr(_adr.R_EndFrame)								, R_EndFrame_d);
+	_hooks.R_EndFrame_h.create(									CalcPtr(_adr.R_EndFrame)								, R_EndFrame_d);
 	
-	//_hooks.LUI_LuaCall_LUIGlobalPackage_DebugPrint_h.create(	CalcAdr(_adr.LUI_LuaCall_LUIGlobalPackage_DebugPrint)	, LUI_LuaCall_LUIGlobalPackage_DebugPrint_d);
+	//_hooks.LUI_LuaCall_LUIGlobalPackage_DebugPrint_h.create(	CalcPtr(_adr.LUI_LuaCall_LUIGlobalPackage_DebugPrint)	, LUI_LuaCall_LUIGlobalPackage_DebugPrint_d);
 	
 	
 
@@ -3422,190 +3422,190 @@ void GameSetup()
 	//BreakpointSetup();
 
 	//_dumpGSC = true;
-	//_hooks.DB_LoadXFile_h.create(		CalcAdr(_adr.DB_LoadXFile)		, DB_LoadXFile_d);
-	//_hooks.Load_ScriptFile_h.create(	CalcAdr(_adr.Load_ScriptFile)	, Load_ScriptFile_d);
-	//_hooks.LUI_ReportError_h.create(	CalcAdr(_adr.LUI_ReportError)	, LUI_ReportError_d);
-	_hooks.Dvar_RegisterBool_h.create(							CalcAdr(_adr.Dvar_RegisterBool)							, Dvar_RegisterBool_d);
+	//_hooks.DB_LoadXFile_h.create(		CalcPtr(_adr.DB_LoadXFile)		, DB_LoadXFile_d);
+	//_hooks.Load_ScriptFile_h.create(	CalcPtr(_adr.Load_ScriptFile)	, Load_ScriptFile_d);
+	//_hooks.LUI_ReportError_h.create(	CalcPtr(_adr.LUI_ReportError)	, LUI_ReportError_d);
+	_hooks.Dvar_RegisterBool_h.create(							CalcPtr(_adr.Dvar_RegisterBool)							, Dvar_RegisterBool_d);
 	
-	utils::hook::jump(											CalcAdr(_adr.LUI_CoD_LuaCall_OfflineDataFetched)		, LUI_CoD_LuaCall_OfflineDataFetched_d);
-	utils::hook::jump(											CalcAdr(_adr.LUI_COD_LuaCall_IsPremiumPlayer)			, LUI_COD_LuaCall_IsPremiumPlayer_d);
-	utils::hook::jump(											CalcAdr(_adr.LUI_CoD_LuaCall_IsLocalPlayAllowed)		, LUI_CoD_LuaCall_IsLocalPlayAllowed_d);
+	utils::hook::jump(											CalcPtr(_adr.LUI_CoD_LuaCall_OfflineDataFetched)		, LUI_CoD_LuaCall_OfflineDataFetched_d);
+	utils::hook::jump(											CalcPtr(_adr.LUI_COD_LuaCall_IsPremiumPlayer)			, LUI_COD_LuaCall_IsPremiumPlayer_d);
+	utils::hook::jump(											CalcPtr(_adr.LUI_CoD_LuaCall_IsLocalPlayAllowed)		, LUI_CoD_LuaCall_IsLocalPlayAllowed_d);
 	
-	utils::hook::jump(											CalcAdr(_adr.Content_DoWeHaveContentPack)				, Content_DoWeHaveContentPack_d);
+	utils::hook::jump(											CalcPtr(_adr.Content_DoWeHaveContentPack)				, Content_DoWeHaveContentPack_d);
 	
 
 	/*
-	utils::hook::jump(											CalcAdr(_adr.Live_FakeUserSignIn)						, Live_FakeUserSignIn_d);
-	utils::hook::jump(											CalcAdr(_adr.OnlineErrorManager_GetFenceState)			, OnlineErrorManager_GetFenceState_d);
-	utils::hook::jump(											CalcAdr(_adr.OnlineErrorManager_IsMpNotAllowed)			, OnlineErrorManager_IsMpNotAllowed_d);
-	utils::hook::set<int>(										CalcAdr(_adr.Platform_BeginAuth)						, 0xC3);
+	utils::hook::jump(											CalcPtr(_adr.Live_FakeUserSignIn)						, Live_FakeUserSignIn_d);
+	utils::hook::jump(											CalcPtr(_adr.OnlineErrorManager_GetFenceState)			, OnlineErrorManager_GetFenceState_d);
+	utils::hook::jump(											CalcPtr(_adr.OnlineErrorManager_IsMpNotAllowed)			, OnlineErrorManager_IsMpNotAllowed_d);
+	utils::hook::set<int>(										CalcPtr(_adr.Platform_BeginAuth)						, 0xC3);
 
 	*/
 
-	memcpy(														(void*)CalcAdr(_adr.Live_IsInSystemlinkLobby)			, "\xB0\x01"	, 2);
+	memcpy(														(void*)CalcPtr(_adr.Live_IsInSystemlinkLobby)			, "\xB0\x01"	, 2);
 	
 	/*
-	utils::hook::jump(											CalcAdr(_adr.Live_IsUserSignedIn)						, Live_IsUserSignedIn_d);
-	utils::hook::jump(											CalcAdr(_adr.GamerProfile_IsProfileLoggedIn)			, GamerProfile_IsProfileLoggedIn_d);
-	utils::hook::jump(											CalcAdr(_adr.Live_IsUserSignedInToBnet)					, Live_IsUserSignedInToBnet_d);
-	utils::hook::jump(											CalcAdr(_adr.Live_IsUserSignedInToDemonware)			, Live_IsUserSignedInToDemonware_d);
-	utils::hook::jump(											CalcAdr(_adr.LUI_CoD_LuaCall_IsUserSignedInToLive)		, LUI_CoD_LuaCall_IsUserSignedInToLive_d);
-	utils::hook::jump(											CalcAdr(_adr.LUI_CoD_LuaCall_IsUserSignedInToDemonware)	, LUI_CoD_LuaCall_IsUserSignedInToDemonware_d);
-	utils::hook::jump(											CalcAdr(_adr.LUI_CoD_LuaCall_IsBattleNetAuthReady)		, LUI_CoD_LuaCall_IsBattleNetAuthReady_d);
-	utils::hook::jump(											CalcAdr(_adr.LUI_COD_LuaCall_IsBattleNet)				, LUI_COD_LuaCall_IsBattleNet_d);
-	utils::hook::jump(											CalcAdr(_adr.LUI_CoD_LuaCall_IsConnectedToGameServer)	, LUI_CoD_LuaCall_IsConnectedToGameServer_d);
-	utils::hook::jump(											CalcAdr(_adr.LUI_CoD_LuaCall_IsGameModeAvailable)		, LUI_CoD_LuaCall_IsGameModeAvailable_d);
-	utils::hook::jump(											CalcAdr(_adr.LUI_CoD_LuaCall_IsGameModeAllowed)			, LUI_CoD_LuaCall_IsGameModeAllowed_d);
-	utils::hook::jump(											CalcAdr(_adr.LUI_COD_LuaCall_HasActiveLocalClient)		, LUI_COD_LuaCall_HasActiveLocalClient_d);
-	utils::hook::jump(											CalcAdr(_adr.GetUsername)								, GetUsername_d);
+	utils::hook::jump(											CalcPtr(_adr.Live_IsUserSignedIn)						, Live_IsUserSignedIn_d);
+	utils::hook::jump(											CalcPtr(_adr.GamerProfile_IsProfileLoggedIn)			, GamerProfile_IsProfileLoggedIn_d);
+	utils::hook::jump(											CalcPtr(_adr.Live_IsUserSignedInToBnet)					, Live_IsUserSignedInToBnet_d);
+	utils::hook::jump(											CalcPtr(_adr.Live_IsUserSignedInToDemonware)			, Live_IsUserSignedInToDemonware_d);
+	utils::hook::jump(											CalcPtr(_adr.LUI_CoD_LuaCall_IsUserSignedInToLive)		, LUI_CoD_LuaCall_IsUserSignedInToLive_d);
+	utils::hook::jump(											CalcPtr(_adr.LUI_CoD_LuaCall_IsUserSignedInToDemonware)	, LUI_CoD_LuaCall_IsUserSignedInToDemonware_d);
+	utils::hook::jump(											CalcPtr(_adr.LUI_CoD_LuaCall_IsBattleNetAuthReady)		, LUI_CoD_LuaCall_IsBattleNetAuthReady_d);
+	utils::hook::jump(											CalcPtr(_adr.LUI_COD_LuaCall_IsBattleNet)				, LUI_COD_LuaCall_IsBattleNet_d);
+	utils::hook::jump(											CalcPtr(_adr.LUI_CoD_LuaCall_IsConnectedToGameServer)	, LUI_CoD_LuaCall_IsConnectedToGameServer_d);
+	utils::hook::jump(											CalcPtr(_adr.LUI_CoD_LuaCall_IsGameModeAvailable)		, LUI_CoD_LuaCall_IsGameModeAvailable_d);
+	utils::hook::jump(											CalcPtr(_adr.LUI_CoD_LuaCall_IsGameModeAllowed)			, LUI_CoD_LuaCall_IsGameModeAllowed_d);
+	utils::hook::jump(											CalcPtr(_adr.LUI_COD_LuaCall_HasActiveLocalClient)		, LUI_COD_LuaCall_HasActiveLocalClient_d);
+	utils::hook::jump(											CalcPtr(_adr.GetUsername)								, GetUsername_d);
 	*/
 
-	//utils::hook::jump(									CalcAdr(_adr.LUI_COD_LuaCall_IsBattleNetLanOnly)			, LUI_COD_LuaCall_IsBattleNetLanOnly_d);
-	//utils::hook::jump(									CalcAdr(_adr.j_LUI_CoD_LuaCall_ShouldBeInOnlineArea)		, j_LUI_CoD_LuaCall_ShouldBeInOnlineArea_d);
-	//utils::hook::jump(									CalcAdr(_adr.LuaShared_LuaCall_IsDemoBuild)					, LuaShared_LuaCall_IsDemoBuild_d);
+	//utils::hook::jump(									CalcPtr(_adr.LUI_COD_LuaCall_IsBattleNetLanOnly)			, LUI_COD_LuaCall_IsBattleNetLanOnly_d);
+	//utils::hook::jump(									CalcPtr(_adr.j_LUI_CoD_LuaCall_ShouldBeInOnlineArea)		, j_LUI_CoD_LuaCall_ShouldBeInOnlineArea_d);
+	//utils::hook::jump(									CalcPtr(_adr.LuaShared_LuaCall_IsDemoBuild)					, LuaShared_LuaCall_IsDemoBuild_d);
 
-	//utils::hook::jump(									CalcAdr(_adr.dwGetLogOnStatus)								, dwGetLogOnStatus_d);
-	//dwGetLogOnStatus_h.create(							CalcAdr(_adr.dwGetLogOnStatus)								, dwGetLogOnStatus_d);
-	//utils::hook::jump(									CalcAdr(_adr.SEH_StringEd_GetString)						, SEH_StringEd_GetString_d);
-	//utils::hook::jump(									CalcAdr(_adr.LiveStorage_GetActiveStatsSource)				, LiveStorage_GetActiveStatsSource_d);
+	//utils::hook::jump(									CalcPtr(_adr.dwGetLogOnStatus)								, dwGetLogOnStatus_d);
+	//dwGetLogOnStatus_h.create(							CalcPtr(_adr.dwGetLogOnStatus)								, dwGetLogOnStatus_d);
+	//utils::hook::jump(									CalcPtr(_adr.SEH_StringEd_GetString)						, SEH_StringEd_GetString_d);
+	//utils::hook::jump(									CalcPtr(_adr.LiveStorage_GetActiveStatsSource)				, LiveStorage_GetActiveStatsSource_d);
 
-	//	utils::hook::jump(									CalcAdr(_adr.LUI_CoD_LuaCall_IsUserSignedInToLive)			, LUI_CoD_LuaCall_IsUserSignedInToLive_d);
-	//	utils::hook::jump(									CalcAdr(_adr.LUI_CoD_LuaCall_IsUserSignedInToDemonware)		, LUI_CoD_LuaCall_IsUserSignedInToDemonware_d);
+	//	utils::hook::jump(									CalcPtr(_adr.LUI_CoD_LuaCall_IsUserSignedInToLive)			, LUI_CoD_LuaCall_IsUserSignedInToLive_d);
+	//	utils::hook::jump(									CalcPtr(_adr.LUI_CoD_LuaCall_IsUserSignedInToDemonware)		, LUI_CoD_LuaCall_IsUserSignedInToDemonware_d);
 
-	//utils::hook::jump(									CalcAdr(_adr.Live_IsInSystemlinkLobby)						, Live_IsInSystemlinkLobby_d);
-	//Live_IsInSystemlinkLobby_h.create(					CalcAdr(_adr.Live_IsInSystemlinkLobby)						, Live_IsInSystemlinkLobby_d);
+	//utils::hook::jump(									CalcPtr(_adr.Live_IsInSystemlinkLobby)						, Live_IsInSystemlinkLobby_d);
+	//Live_IsInSystemlinkLobby_h.create(					CalcPtr(_adr.Live_IsInSystemlinkLobby)						, Live_IsInSystemlinkLobby_d);
 
-	//DDL_Lookup_MoveToNameHash_h.create(					CalcAdr(_adr.DDL_Lookup_MoveToNameHash)						, DDL_Lookup_MoveToNameHash_d);
+	//DDL_Lookup_MoveToNameHash_h.create(					CalcPtr(_adr.DDL_Lookup_MoveToNameHash)						, DDL_Lookup_MoveToNameHash_d);
 
-	//luaL_loadfile_h.create(								CalcAdr(_adr.luaL_loadfile)									, luaL_loadfile_d);
+	//luaL_loadfile_h.create(								CalcPtr(_adr.luaL_loadfile)									, luaL_loadfile_d);
 	
-	//luaL_loadbuffer_h.create(							CalcAdr(_adr.luaL_loadbuffer)								, luaL_loadbuffer_d);
-	//DB_FindXAssetHeader_h.create(						CalcAdr(_adr.DB_FindXAssetHeader)							, DB_FindXAssetHeader_d);
-	//luaL_openlib_h.create(								CalcAdr(_adr.luaL_openlib)									, luaL_openlib_d);
-	//LiveStorage_BeginGame_h.create(						CalcAdr(_adr.LiveStorage_BeginGame)							, LiveStorage_BeginGame_d);
-	//LiveStorage_ReadStats_h.create(						CalcAdr(_adr.LiveStorage_ReadStats)							, LiveStorage_ReadStats_d);
-	//Com_DDL_LoadAsset_h.create(							CalcAdr(_adr.Com_DDL_LoadAsset)								, Com_DDL_LoadAsset_d);
-	//LiveStorage_GetPlayerDataBufferForSource_h.create(	CalcAdr(_adr.LiveStorage_GetPlayerDataBufferForSource)		, LiveStorage_GetPlayerDataBufferForSource_d);
+	//luaL_loadbuffer_h.create(							CalcPtr(_adr.luaL_loadbuffer)								, luaL_loadbuffer_d);
+	//DB_FindXAssetHeader_h.create(						CalcPtr(_adr.DB_FindXAssetHeader)							, DB_FindXAssetHeader_d);
+	//luaL_openlib_h.create(								CalcPtr(_adr.luaL_openlib)									, luaL_openlib_d);
+	//LiveStorage_BeginGame_h.create(						CalcPtr(_adr.LiveStorage_BeginGame)							, LiveStorage_BeginGame_d);
+	//LiveStorage_ReadStats_h.create(						CalcPtr(_adr.LiveStorage_ReadStats)							, LiveStorage_ReadStats_d);
+	//Com_DDL_LoadAsset_h.create(							CalcPtr(_adr.Com_DDL_LoadAsset)								, Com_DDL_LoadAsset_d);
+	//LiveStorage_GetPlayerDataBufferForSource_h.create(	CalcPtr(_adr.LiveStorage_GetPlayerDataBufferForSource)		, LiveStorage_GetPlayerDataBufferForSource_d);
 	
-	//	LUI_LuaCall_LUIGlobalPackage_DebugPrint_h.create(		CalcAdr(_adr.LUI_LuaCall_LUIGlobalPackage_DebugPrint)		, LUI_LuaCall_LUIGlobalPackage_DebugPrint_d);
-	//	LUI_CoD_LuaCall_OfflineDataFetched_h.create(			CalcAdr(_adr.LUI_CoD_LuaCall_OfflineDataFetched)			, LUI_CoD_LuaCall_OfflineDataFetched_d);
-	//	LUI_COD_LuaCall_IsPremiumPlayer_h.create(				CalcAdr(_adr.LUI_COD_LuaCall_IsPremiumPlayer)				, LUI_COD_LuaCall_IsPremiumPlayer_d);
-	//	LUI_CoD_LuaCall_IsLocalPlayAllowed_h.create(			CalcAdr(_adr.LUI_CoD_LuaCall_IsLocalPlayAllowed)			, LUI_CoD_LuaCall_IsLocalPlayAllowed_d);
-	//	LUI_CoD_LuaCall_IsUserSignedInToLive_h.create(			CalcAdr(_adr.LUI_CoD_LuaCall_IsUserSignedInToLive)			, LUI_CoD_LuaCall_IsUserSignedInToLive_d);
-	//	LUI_CoD_LuaCall_IsUserSignedInToDemonware_h.create(		CalcAdr(_adr.LUI_CoD_LuaCall_IsUserSignedInToDemonware)		, LUI_CoD_LuaCall_IsUserSignedInToDemonware_d);
+	//	LUI_LuaCall_LUIGlobalPackage_DebugPrint_h.create(		CalcPtr(_adr.LUI_LuaCall_LUIGlobalPackage_DebugPrint)		, LUI_LuaCall_LUIGlobalPackage_DebugPrint_d);
+	//	LUI_CoD_LuaCall_OfflineDataFetched_h.create(			CalcPtr(_adr.LUI_CoD_LuaCall_OfflineDataFetched)			, LUI_CoD_LuaCall_OfflineDataFetched_d);
+	//	LUI_COD_LuaCall_IsPremiumPlayer_h.create(				CalcPtr(_adr.LUI_COD_LuaCall_IsPremiumPlayer)				, LUI_COD_LuaCall_IsPremiumPlayer_d);
+	//	LUI_CoD_LuaCall_IsLocalPlayAllowed_h.create(			CalcPtr(_adr.LUI_CoD_LuaCall_IsLocalPlayAllowed)			, LUI_CoD_LuaCall_IsLocalPlayAllowed_d);
+	//	LUI_CoD_LuaCall_IsUserSignedInToLive_h.create(			CalcPtr(_adr.LUI_CoD_LuaCall_IsUserSignedInToLive)			, LUI_CoD_LuaCall_IsUserSignedInToLive_d);
+	//	LUI_CoD_LuaCall_IsUserSignedInToDemonware_h.create(		CalcPtr(_adr.LUI_CoD_LuaCall_IsUserSignedInToDemonware)		, LUI_CoD_LuaCall_IsUserSignedInToDemonware_d);
 	//	
-	//	GetUsername_h.create(									CalcAdr(_adr.GetUsername)									, GetUsername_d);
-	//	dwGetLogOnStatus_h.create(								CalcAdr(_adr.dwGetLogOnStatus)								, dwGetLogOnStatus_d);
-	//	Content_DoWeHaveContentPack_h.create(					CalcAdr(_adr.Content_DoWeHaveContentPack)					, Content_DoWeHaveContentPack_d);
-	//	GamerProfile_IsProfileLoggedIn_h.create(				CalcAdr(_adr.GamerProfile_IsProfileLoggedIn)				, GamerProfile_IsProfileLoggedIn_d);
-	//	Live_IsUserSignedInToBnet_h.create(						CalcAdr(_adr.Live_IsUserSignedInToBnet)						, Live_IsUserSignedInToBnet_d);
-	//	Live_IsUserSignedInToDemonware_h.create(				CalcAdr(_adr.Live_IsUserSignedInToDemonware)				, Live_IsUserSignedInToDemonware_d);
-	//	LiveStorage_GetActiveStatsSource_h.create(				CalcAdr(_adr.LiveStorage_GetActiveStatsSource)				, LiveStorage_GetActiveStatsSource_d);
+	//	GetUsername_h.create(									CalcPtr(_adr.GetUsername)									, GetUsername_d);
+	//	dwGetLogOnStatus_h.create(								CalcPtr(_adr.dwGetLogOnStatus)								, dwGetLogOnStatus_d);
+	//	Content_DoWeHaveContentPack_h.create(					CalcPtr(_adr.Content_DoWeHaveContentPack)					, Content_DoWeHaveContentPack_d);
+	//	GamerProfile_IsProfileLoggedIn_h.create(				CalcPtr(_adr.GamerProfile_IsProfileLoggedIn)				, GamerProfile_IsProfileLoggedIn_d);
+	//	Live_IsUserSignedInToBnet_h.create(						CalcPtr(_adr.Live_IsUserSignedInToBnet)						, Live_IsUserSignedInToBnet_d);
+	//	Live_IsUserSignedInToDemonware_h.create(				CalcPtr(_adr.Live_IsUserSignedInToDemonware)				, Live_IsUserSignedInToDemonware_d);
+	//	LiveStorage_GetActiveStatsSource_h.create(				CalcPtr(_adr.LiveStorage_GetActiveStatsSource)				, LiveStorage_GetActiveStatsSource_d);
 
-	//LuaShared_LuaCall_IsConsoleGame_h.create(				CalcAdr(_adr.LuaShared_LuaCall_IsConsoleGame)				, LuaShared_LuaCall_IsConsoleGame_d);
-	//LuaShared_LuaCall_IsDevelopmentBuild_h.create(			CalcAdr(_adr.LuaShared_LuaCall_IsDevelopmentBuild)			, LuaShared_LuaCall_IsDevelopmentBuild_d);
-	//LUI_COD_LuaCall_HasActiveLocalClient_h.create(			CalcAdr(_adr.LUI_COD_LuaCall_HasActiveLocalClient)			, LUI_COD_LuaCall_HasActiveLocalClient_d);
-	//LUI_CoD_LuaCall_StatsResetGetState_h.create(			CalcAdr(_adr.LUI_CoD_LuaCall_StatsResetGetState)			, LUI_CoD_LuaCall_StatsResetGetState_d);
-	//utils::hook::jump(									CalcAdr(_adr.Live_IsInSystemlinkLobby)						, Live_IsInSystemlinkLobby_d);
-	//utils::hook::jump(									CalcAdr(_adr.LUI_CoD_LuaCall_OfflineDataFetched)			, lua_pushboolean_return_true_d);
-	//utils::hook::jump(									CalcAdr(_adr.LUI_COD_LuaCall_IsPremiumPlayer)				, lua_pushboolean_return_true_d);
+	//LuaShared_LuaCall_IsConsoleGame_h.create(				CalcPtr(_adr.LuaShared_LuaCall_IsConsoleGame)				, LuaShared_LuaCall_IsConsoleGame_d);
+	//LuaShared_LuaCall_IsDevelopmentBuild_h.create(			CalcPtr(_adr.LuaShared_LuaCall_IsDevelopmentBuild)			, LuaShared_LuaCall_IsDevelopmentBuild_d);
+	//LUI_COD_LuaCall_HasActiveLocalClient_h.create(			CalcPtr(_adr.LUI_COD_LuaCall_HasActiveLocalClient)			, LUI_COD_LuaCall_HasActiveLocalClient_d);
+	//LUI_CoD_LuaCall_StatsResetGetState_h.create(			CalcPtr(_adr.LUI_CoD_LuaCall_StatsResetGetState)			, LUI_CoD_LuaCall_StatsResetGetState_d);
+	//utils::hook::jump(									CalcPtr(_adr.Live_IsInSystemlinkLobby)						, Live_IsInSystemlinkLobby_d);
+	//utils::hook::jump(									CalcPtr(_adr.LUI_CoD_LuaCall_OfflineDataFetched)			, lua_pushboolean_return_true_d);
+	//utils::hook::jump(									CalcPtr(_adr.LUI_COD_LuaCall_IsPremiumPlayer)				, lua_pushboolean_return_true_d);
 	
 	//LUIMethod_LUIGlobalPackage_list_f();
 	
-	//utils::hook::jump(									CalcAdr(_adr.LiveStorage_GetActiveStatsSource)		, LiveStorage_GetActiveStatsSource_d);
+	//utils::hook::jump(									CalcPtr(_adr.LiveStorage_GetActiveStatsSource)		, LiveStorage_GetActiveStatsSource_d);
 
-	//utils::hook::jump(									CalcAdr(_adr.dwGetLogOnStatus)								, dwGetLogOnStatus_d);
-	//utils::hook::jump(									CalcAdr(_adr.Live_IsUserSignedInToBnet)							, Live_IsUserSignedInToBnet_d);
-	//utils::hook::jump(									CalcAdr(_adr.Content_DoWeHaveContentPack)					, Content_DoWeHaveContentPack_d);
-	//utils::hook::jump(									CalcAdr(_adr.GamerProfile_IsProfileLoggedIn)				, GamerProfile_IsProfileLoggedIn_d);
-	//utils::hook::jump(									CalcAdr(_adr.Live_IsUserSignedInToDemonware)				, Live_IsUserSignedInToDemonware_d);
-	//utils::hook::jump(									CalcAdr(_adr.LUI_CoD_LuaCall_IsUserSignedInToLive)			, lua_pushboolean_return_true_d);
-	//utils::hook::jump(									CalcAdr(_adr.LUI_CoD_LuaCall_IsUserSignedInToDemonware)		, lua_pushboolean_return_true_d);
-	//utils::hook::jump(									CalcAdr(_adr.LuaShared_LuaCall_IsDemoBuild)					, lua_pushboolean_return_true_d);
-	//utils::hook::jump(									CalcAdr(_adr.LUI_CoD_LuaCall_IsGameModeAllowed)				, lua_pushboolean_return_true_d);
-	//utils::hook::jump(									CalcAdr(_adr.LUI_COD_LuaCall_IsBattleNetLanOnly)			, lua_pushboolean_return_true_d);
-	//utils::hook::jump(									CalcAdr(_adr.LUI_CoD_LuaCall_IsGameModeAvailable)			, lua_pushboolean_return_true_d);
-	//utils::hook::jump(									CalcAdr(_adr.LUI_CoD_LuaCall_IsBattleNetAuthReady)			, lua_pushboolean_return_true_d);
-	//utils::hook::jump(									CalcAdr(_adr.LUI_CoD_LuaCall_IsConnectedToGameServer)		, lua_pushboolean_return_true_d);
-	//utils::hook::jump(									CalcAdr(_adr.LUI_COD_LuaCall_IsPremiumPlayerReady)			, lua_pushboolean_return_true_d);
+	//utils::hook::jump(									CalcPtr(_adr.dwGetLogOnStatus)								, dwGetLogOnStatus_d);
+	//utils::hook::jump(									CalcPtr(_adr.Live_IsUserSignedInToBnet)							, Live_IsUserSignedInToBnet_d);
+	//utils::hook::jump(									CalcPtr(_adr.Content_DoWeHaveContentPack)					, Content_DoWeHaveContentPack_d);
+	//utils::hook::jump(									CalcPtr(_adr.GamerProfile_IsProfileLoggedIn)				, GamerProfile_IsProfileLoggedIn_d);
+	//utils::hook::jump(									CalcPtr(_adr.Live_IsUserSignedInToDemonware)				, Live_IsUserSignedInToDemonware_d);
+	//utils::hook::jump(									CalcPtr(_adr.LUI_CoD_LuaCall_IsUserSignedInToLive)			, lua_pushboolean_return_true_d);
+	//utils::hook::jump(									CalcPtr(_adr.LUI_CoD_LuaCall_IsUserSignedInToDemonware)		, lua_pushboolean_return_true_d);
+	//utils::hook::jump(									CalcPtr(_adr.LuaShared_LuaCall_IsDemoBuild)					, lua_pushboolean_return_true_d);
+	//utils::hook::jump(									CalcPtr(_adr.LUI_CoD_LuaCall_IsGameModeAllowed)				, lua_pushboolean_return_true_d);
+	//utils::hook::jump(									CalcPtr(_adr.LUI_COD_LuaCall_IsBattleNetLanOnly)			, lua_pushboolean_return_true_d);
+	//utils::hook::jump(									CalcPtr(_adr.LUI_CoD_LuaCall_IsGameModeAvailable)			, lua_pushboolean_return_true_d);
+	//utils::hook::jump(									CalcPtr(_adr.LUI_CoD_LuaCall_IsBattleNetAuthReady)			, lua_pushboolean_return_true_d);
+	//utils::hook::jump(									CalcPtr(_adr.LUI_CoD_LuaCall_IsConnectedToGameServer)		, lua_pushboolean_return_true_d);
+	//utils::hook::jump(									CalcPtr(_adr.LUI_COD_LuaCall_IsPremiumPlayerReady)			, lua_pushboolean_return_true_d);
 
-	//memcpy((void*)CalcAdr(_adr.Live_IsSignedIn), "\xB0\x01\xC3\x90\x90\x90\x90\x90\x90\x90\x90", 11);
-	//_hooks.Live_IsSignedIn_h.create(							CalcAdr(_adr.Live_IsSignedIn)								, Live_IsSignedIn_d);
-	//dwGetLogOnStatus_h.create(							CalcAdr(_adr.dwGetLogOnStatus)								, dwGetLogOnStatus_d);
-	//Live_IsUserSignedIn_h.create(						CalcAdr(_adr.Live_IsUserSignedIn)							, Live_IsUserSignedIn_d);
-	//Live_IsUserSignedInToLive_h.create(					CalcAdr(_adr.Live_IsUserSignedInToLive)						, Live_IsUserSignedInToLive_d);
-	//Live_IsUserSignedInToBnet_h.create(					CalcAdr(_adr.Live_IsUserSignedInToBnet)						, Live_IsUserSignedInToBnet_d);
-	//Live_IsUserSignedInToDemonware_h.create(			CalcAdr(_adr.Live_IsUserSignedInToDemonware)				, Live_IsUserSignedInToDemonware_d);
-	//j_LUI_CoD_LuaCall_ShouldBeInOnlineArea_h.create(	CalcAdr(_adr.j_LUI_CoD_LuaCall_ShouldBeInOnlineArea)		, j_LUI_CoD_LuaCall_ShouldBeInOnlineArea_d);
-	//LUI_CoD_LuaCall_IsUserSignedInToDemonware_h.create(	CalcAdr(_adr.LUI_CoD_LuaCall_IsUserSignedInToDemonware)		, LUI_CoD_LuaCall_IsUserSignedInToDemonware_d);
-	//LUI_COD_LuaCall_IsBattleNetLanOnly_h.create(		CalcAdr(_adr.LUI_COD_LuaCall_IsBattleNetLanOnly)			, LUI_COD_LuaCall_IsBattleNetLanOnly_d);
-	//LUI_CoD_LuaCall_IsBattleNetAuthReady_h.create(		CalcAdr(_adr.LUI_CoD_LuaCall_IsBattleNetAuthReady)			, LUI_CoD_LuaCall_IsBattleNetAuthReady_d);
-	//LUI_COD_LuaCall_IsBattleNet_h.create(				CalcAdr(_adr.LUI_COD_LuaCall_IsBattleNet)					, LUI_COD_LuaCall_IsBattleNet_d);
-	//LiveStorage_GetActiveStatsSource_h.create(			CalcAdr(_adr.LiveStorage_GetActiveStatsSource)				, LiveStorage_GetActiveStatsSource_d);
-	//utils::hook::jump(CalcAdr(_adr.Live_IsSignedIn), Live_IsSignedIn_d);
+	//memcpy((void*)CalcPtr(_adr.Live_IsSignedIn), "\xB0\x01\xC3\x90\x90\x90\x90\x90\x90\x90\x90", 11);
+	//_hooks.Live_IsSignedIn_h.create(							CalcPtr(_adr.Live_IsSignedIn)								, Live_IsSignedIn_d);
+	//dwGetLogOnStatus_h.create(							CalcPtr(_adr.dwGetLogOnStatus)								, dwGetLogOnStatus_d);
+	//Live_IsUserSignedIn_h.create(						CalcPtr(_adr.Live_IsUserSignedIn)							, Live_IsUserSignedIn_d);
+	//Live_IsUserSignedInToLive_h.create(					CalcPtr(_adr.Live_IsUserSignedInToLive)						, Live_IsUserSignedInToLive_d);
+	//Live_IsUserSignedInToBnet_h.create(					CalcPtr(_adr.Live_IsUserSignedInToBnet)						, Live_IsUserSignedInToBnet_d);
+	//Live_IsUserSignedInToDemonware_h.create(			CalcPtr(_adr.Live_IsUserSignedInToDemonware)				, Live_IsUserSignedInToDemonware_d);
+	//j_LUI_CoD_LuaCall_ShouldBeInOnlineArea_h.create(	CalcPtr(_adr.j_LUI_CoD_LuaCall_ShouldBeInOnlineArea)		, j_LUI_CoD_LuaCall_ShouldBeInOnlineArea_d);
+	//LUI_CoD_LuaCall_IsUserSignedInToDemonware_h.create(	CalcPtr(_adr.LUI_CoD_LuaCall_IsUserSignedInToDemonware)		, LUI_CoD_LuaCall_IsUserSignedInToDemonware_d);
+	//LUI_COD_LuaCall_IsBattleNetLanOnly_h.create(		CalcPtr(_adr.LUI_COD_LuaCall_IsBattleNetLanOnly)			, LUI_COD_LuaCall_IsBattleNetLanOnly_d);
+	//LUI_CoD_LuaCall_IsBattleNetAuthReady_h.create(		CalcPtr(_adr.LUI_CoD_LuaCall_IsBattleNetAuthReady)			, LUI_CoD_LuaCall_IsBattleNetAuthReady_d);
+	//LUI_COD_LuaCall_IsBattleNet_h.create(				CalcPtr(_adr.LUI_COD_LuaCall_IsBattleNet)					, LUI_COD_LuaCall_IsBattleNet_d);
+	//LiveStorage_GetActiveStatsSource_h.create(			CalcPtr(_adr.LiveStorage_GetActiveStatsSource)				, LiveStorage_GetActiveStatsSource_d);
+	//utils::hook::jump(CalcPtr(_adr.Live_IsSignedIn), Live_IsSignedIn_d);
 
-	//utils::hook::jump(									CalcAdr(_adr.CL_Mgr_GetClientFromController)				, CL_Mgr_GetClientFromController_d);
+	//utils::hook::jump(									CalcPtr(_adr.CL_Mgr_GetClientFromController)				, CL_Mgr_GetClientFromController_d);
 	/*
-	utils::hook::jump(									CalcAdr(_adr.CL_Mgr_IsControllerActive)						, CL_Mgr_IsControllerActive_d);
-	utils::hook::jump(									CalcAdr(_adr.LiveStorage_GetActiveStatsSource)				, LiveStorage_GetActiveStatsSource_d);
-	utils::hook::jump(									CalcAdr(_adr.dwGetLogOnStatus)								, dwGetLogOnStatus_d);
-	utils::hook::jump(									CalcAdr(_adr.Live_IsUserSignedIn)							, Live_IsUserSignedIn_d);
-	utils::hook::jump(									CalcAdr(_adr.Live_IsUserSignedInToBnet)							, Live_IsUserSignedInToBnet_d);
-	utils::hook::jump(									CalcAdr(_adr.Content_DoWeHaveContentPack)					, Content_DoWeHaveContentPack_d);
-	utils::hook::jump(									CalcAdr(_adr.LUI_CoD_LuaCall_IsUserSignedInToLive)			, lua_pushboolean_return_true_d);
-	utils::hook::jump(									CalcAdr(_adr.LUI_CoD_LuaCall_IsUserSignedInToDemonware)		, lua_pushboolean_return_true_d);
-	utils::hook::jump(									CalcAdr(_adr.LuaShared_LuaCall_IsDemoBuild)					, lua_pushboolean_return_true_d);
-	utils::hook::jump(									CalcAdr(_adr.LUI_CoD_LuaCall_IsGameModeAllowed)				, lua_pushboolean_return_true_d);
-	utils::hook::jump(									CalcAdr(_adr.LUI_COD_LuaCall_IsBattleNetLanOnly)			, lua_pushboolean_return_true_d);
-	utils::hook::jump(									CalcAdr(_adr.LUI_CoD_LuaCall_IsGameModeAvailable)			, lua_pushboolean_return_true_d);
-	utils::hook::jump(									CalcAdr(_adr.LUI_CoD_LuaCall_IsBattleNetAuthReady)			, lua_pushboolean_return_true_d);
-	utils::hook::jump(									CalcAdr(_adr.LUI_CoD_LuaCall_IsConnectedToGameServer)		, lua_pushboolean_return_true_d);
-	utils::hook::jump(									CalcAdr(_adr.LUI_COD_LuaCall_IsPremiumPlayerReady)			, lua_pushboolean_return_true_d);
+	utils::hook::jump(									CalcPtr(_adr.CL_Mgr_IsControllerActive)						, CL_Mgr_IsControllerActive_d);
+	utils::hook::jump(									CalcPtr(_adr.LiveStorage_GetActiveStatsSource)				, LiveStorage_GetActiveStatsSource_d);
+	utils::hook::jump(									CalcPtr(_adr.dwGetLogOnStatus)								, dwGetLogOnStatus_d);
+	utils::hook::jump(									CalcPtr(_adr.Live_IsUserSignedIn)							, Live_IsUserSignedIn_d);
+	utils::hook::jump(									CalcPtr(_adr.Live_IsUserSignedInToBnet)							, Live_IsUserSignedInToBnet_d);
+	utils::hook::jump(									CalcPtr(_adr.Content_DoWeHaveContentPack)					, Content_DoWeHaveContentPack_d);
+	utils::hook::jump(									CalcPtr(_adr.LUI_CoD_LuaCall_IsUserSignedInToLive)			, lua_pushboolean_return_true_d);
+	utils::hook::jump(									CalcPtr(_adr.LUI_CoD_LuaCall_IsUserSignedInToDemonware)		, lua_pushboolean_return_true_d);
+	utils::hook::jump(									CalcPtr(_adr.LuaShared_LuaCall_IsDemoBuild)					, lua_pushboolean_return_true_d);
+	utils::hook::jump(									CalcPtr(_adr.LUI_CoD_LuaCall_IsGameModeAllowed)				, lua_pushboolean_return_true_d);
+	utils::hook::jump(									CalcPtr(_adr.LUI_COD_LuaCall_IsBattleNetLanOnly)			, lua_pushboolean_return_true_d);
+	utils::hook::jump(									CalcPtr(_adr.LUI_CoD_LuaCall_IsGameModeAvailable)			, lua_pushboolean_return_true_d);
+	utils::hook::jump(									CalcPtr(_adr.LUI_CoD_LuaCall_IsBattleNetAuthReady)			, lua_pushboolean_return_true_d);
+	utils::hook::jump(									CalcPtr(_adr.LUI_CoD_LuaCall_IsConnectedToGameServer)		, lua_pushboolean_return_true_d);
+	utils::hook::jump(									CalcPtr(_adr.LUI_COD_LuaCall_IsPremiumPlayerReady)			, lua_pushboolean_return_true_d);
 
 	*/
 
-	//R_EndFrame_h.create(								CalcAdr(_adr.R_EndFrame)									, R_EndFrame_d);
-	//dwGetLogOnStatus_h.create(							CalcAdr(_adr.dwGetLogOnStatus)								, dwGetLogOnStatus_d);
-	//Dvar_RegisterBool_h.create(							CalcAdr(_adr.Dvar_RegisterBool)								, Dvar_RegisterBool_d);
-	//Live_IsUserSignedInToBnet_h.create(						CalcAdr(_adr.Live_IsUserSignedInToBnet)							, Live_IsUserSignedInToBnet_d);
-	//Content_DoWeHaveContentPack_h.create(				CalcAdr(_adr.Content_DoWeHaveContentPack)					, Content_DoWeHaveContentPack_d);
-	//CL_GetLocalClientSignInState_h.create(				CalcAdr(_adr.CL_GetLocalClientSignInState)					, CL_GetLocalClientSignInState_d);
-	//Live_IsUserSignedInToDemonware_h.create(			CalcAdr(_adr.Live_IsUserSignedInToDemonware)				, Live_IsUserSignedInToDemonware_d);
-	//LUI_CoD_LuaCall_IsUserSignedInToLive_h.create(		CalcAdr(_adr.LUI_CoD_LuaCall_IsUserSignedInToLive)			, LUI_CoD_LuaCall_IsUserSignedInToLive_d);
-	//LUI_CoD_LuaCall_IsUserSignedInToDemonware_h.create(	CalcAdr(_adr.LUI_CoD_LuaCall_IsUserSignedInToDemonware)		, LUI_CoD_LuaCall_IsUserSignedInToDemonware_d);
+	//R_EndFrame_h.create(								CalcPtr(_adr.R_EndFrame)									, R_EndFrame_d);
+	//dwGetLogOnStatus_h.create(							CalcPtr(_adr.dwGetLogOnStatus)								, dwGetLogOnStatus_d);
+	//Dvar_RegisterBool_h.create(							CalcPtr(_adr.Dvar_RegisterBool)								, Dvar_RegisterBool_d);
+	//Live_IsUserSignedInToBnet_h.create(						CalcPtr(_adr.Live_IsUserSignedInToBnet)							, Live_IsUserSignedInToBnet_d);
+	//Content_DoWeHaveContentPack_h.create(				CalcPtr(_adr.Content_DoWeHaveContentPack)					, Content_DoWeHaveContentPack_d);
+	//CL_GetLocalClientSignInState_h.create(				CalcPtr(_adr.CL_GetLocalClientSignInState)					, CL_GetLocalClientSignInState_d);
+	//Live_IsUserSignedInToDemonware_h.create(			CalcPtr(_adr.Live_IsUserSignedInToDemonware)				, Live_IsUserSignedInToDemonware_d);
+	//LUI_CoD_LuaCall_IsUserSignedInToLive_h.create(		CalcPtr(_adr.LUI_CoD_LuaCall_IsUserSignedInToLive)			, LUI_CoD_LuaCall_IsUserSignedInToLive_d);
+	//LUI_CoD_LuaCall_IsUserSignedInToDemonware_h.create(	CalcPtr(_adr.LUI_CoD_LuaCall_IsUserSignedInToDemonware)		, LUI_CoD_LuaCall_IsUserSignedInToDemonware_d);
 
-	////utils::hook::jump(				CalcAdr(_adr.SEH_StringEd_GetString)						, SEH_StringEd_GetString_d);
-	//	utils::hook::jump(									CalcAdr(_adr.GetUsername)									, GetUsername_d);
-	//	utils::hook::jump(									CalcAdr(_adr.dwGetLogOnStatus)								, dwGetLogOnStatus_d);
-	//	utils::hook::jump(									CalcAdr(_adr.Live_IsUserSignedIn)							, Live_IsUserSignedIn_d);
-	//	utils::hook::jump(									CalcAdr(_adr.Live_IsUserSignedInToBnet)							, Live_IsUserSignedInToBnet_d);
-	//	utils::hook::jump(									CalcAdr(_adr.Content_DoWeHaveContentPack)					, Content_DoWeHaveContentPack_d);
-	//	utils::hook::jump(									CalcAdr(_adr.GamerProfile_IsProfileLoggedIn)				, GamerProfile_IsProfileLoggedIn_d);
-	//	utils::hook::jump(									CalcAdr(_adr.Live_IsUserSignedInToDemonware)				, Live_IsUserSignedInToDemonware_d);
-	//	utils::hook::jump(									CalcAdr(_adr.LiveStorage_GetActiveStatsSource)				, LiveStorage_GetActiveStatsSource_d);
+	////utils::hook::jump(				CalcPtr(_adr.SEH_StringEd_GetString)						, SEH_StringEd_GetString_d);
+	//	utils::hook::jump(									CalcPtr(_adr.GetUsername)									, GetUsername_d);
+	//	utils::hook::jump(									CalcPtr(_adr.dwGetLogOnStatus)								, dwGetLogOnStatus_d);
+	//	utils::hook::jump(									CalcPtr(_adr.Live_IsUserSignedIn)							, Live_IsUserSignedIn_d);
+	//	utils::hook::jump(									CalcPtr(_adr.Live_IsUserSignedInToBnet)							, Live_IsUserSignedInToBnet_d);
+	//	utils::hook::jump(									CalcPtr(_adr.Content_DoWeHaveContentPack)					, Content_DoWeHaveContentPack_d);
+	//	utils::hook::jump(									CalcPtr(_adr.GamerProfile_IsProfileLoggedIn)				, GamerProfile_IsProfileLoggedIn_d);
+	//	utils::hook::jump(									CalcPtr(_adr.Live_IsUserSignedInToDemonware)				, Live_IsUserSignedInToDemonware_d);
+	//	utils::hook::jump(									CalcPtr(_adr.LiveStorage_GetActiveStatsSource)				, LiveStorage_GetActiveStatsSource_d);
 
 	// allow playing without internet connected
-	//utils::hook::jump(									CalcAdr(_adr.Live_IsSignedIn)								, Live_IsSignedIn_d);
+	//utils::hook::jump(									CalcPtr(_adr.Live_IsSignedIn)								, Live_IsSignedIn_d);
 	// patch Live_IsInSystemlinkLobby (needed for maps to load/start)
-	//	utils::hook::jump(									CalcAdr(_adr.Live_IsInSystemlinkLobby)						, Live_IsInSystemlinkLobby_d);
+	//	utils::hook::jump(									CalcPtr(_adr.Live_IsInSystemlinkLobby)						, Live_IsInSystemlinkLobby_d);
 	//	
-	//	utils::hook::call(									CalcAdr(_adr.Dvar_RegisterBool_call_1)						, Dvar_RegisterBool_2_d);
-	//	utils::hook::call(									CalcAdr(_adr.Dvar_RegisterBool_call_2)						, Dvar_RegisterBool_2_d);
+	//	utils::hook::call(									CalcPtr(_adr.Dvar_RegisterBool_call_1)						, Dvar_RegisterBool_2_d);
+	//	utils::hook::call(									CalcPtr(_adr.Dvar_RegisterBool_call_2)						, Dvar_RegisterBool_2_d);
 
-	//R_EndFrame_h.create(								CalcAdr(_adr.R_EndFrame)									, R_EndFrame_d);
-	////LUI_ReportError_h.create(							CalcAdr(_adr.LUI_ReportError)								, LUI_ReportError_d);
-	//	Dvar_RegisterBool_h.create(							CalcAdr(_adr.Dvar_RegisterBool)								, Dvar_RegisterBool_d);
-	//	DB_FindXAssetHeader_h.create(						CalcAdr(_adr.DB_FindXAssetHeader)							, DB_FindXAssetHeader_d);
+	//R_EndFrame_h.create(								CalcPtr(_adr.R_EndFrame)									, R_EndFrame_d);
+	////LUI_ReportError_h.create(							CalcPtr(_adr.LUI_ReportError)								, LUI_ReportError_d);
+	//	Dvar_RegisterBool_h.create(							CalcPtr(_adr.Dvar_RegisterBool)								, Dvar_RegisterBool_d);
+	//	DB_FindXAssetHeader_h.create(						CalcPtr(_adr.DB_FindXAssetHeader)							, DB_FindXAssetHeader_d);
 
-	//LuaShared_LuaCall_IsDemoBuild_h.create(				CalcAdr(_adr.LuaShared_LuaCall_IsDemoBuild)					, lua_pushboolean_return_true_d);
-	//LUI_COD_LuaCall_IsPremiumPlayer_h.create(			CalcAdr(_adr.LUI_COD_LuaCall_IsPremiumPlayer)				, lua_pushboolean_return_true_d);
-	//LUI_CoD_LuaCall_IsGameModeAllowed_h.create(			CalcAdr(_adr.LUI_CoD_LuaCall_IsGameModeAllowed)				, lua_pushboolean_return_true_d);
-	//LUI_CoD_LuaCall_OfflineDataFetched_h.create(		CalcAdr(_adr.LUI_CoD_LuaCall_OfflineDataFetched)			, lua_pushboolean_return_true_d);
-	//LUI_COD_LuaCall_IsBattleNetLanOnly_h.create(		CalcAdr(_adr.LUI_COD_LuaCall_IsBattleNetLanOnly)			, lua_pushboolean_return_true_d);
-	//LUI_CoD_LuaCall_IsGameModeAvailable_h.create(		CalcAdr(_adr.LUI_CoD_LuaCall_IsGameModeAvailable)			, lua_pushboolean_return_true_d);
-	//LUI_COD_LuaCall_IsPremiumPlayerReady_h.create(		CalcAdr(_adr.LUI_COD_LuaCall_IsPremiumPlayerReady)			, lua_pushboolean_return_true_d);
-	//LUI_CoD_LuaCall_IsBattleNetAuthReady_h.create(		CalcAdr(_adr.LUI_CoD_LuaCall_IsBattleNetAuthReady)			, lua_pushboolean_return_true_d);
-	//LUI_CoD_LuaCall_IsConnectedToGameServer_h.create(	CalcAdr(_adr.LUI_CoD_LuaCall_IsConnectedToGameServer)		, lua_pushboolean_return_true_d);
+	//LuaShared_LuaCall_IsDemoBuild_h.create(				CalcPtr(_adr.LuaShared_LuaCall_IsDemoBuild)					, lua_pushboolean_return_true_d);
+	//LUI_COD_LuaCall_IsPremiumPlayer_h.create(			CalcPtr(_adr.LUI_COD_LuaCall_IsPremiumPlayer)				, lua_pushboolean_return_true_d);
+	//LUI_CoD_LuaCall_IsGameModeAllowed_h.create(			CalcPtr(_adr.LUI_CoD_LuaCall_IsGameModeAllowed)				, lua_pushboolean_return_true_d);
+	//LUI_CoD_LuaCall_OfflineDataFetched_h.create(		CalcPtr(_adr.LUI_CoD_LuaCall_OfflineDataFetched)			, lua_pushboolean_return_true_d);
+	//LUI_COD_LuaCall_IsBattleNetLanOnly_h.create(		CalcPtr(_adr.LUI_COD_LuaCall_IsBattleNetLanOnly)			, lua_pushboolean_return_true_d);
+	//LUI_CoD_LuaCall_IsGameModeAvailable_h.create(		CalcPtr(_adr.LUI_CoD_LuaCall_IsGameModeAvailable)			, lua_pushboolean_return_true_d);
+	//LUI_COD_LuaCall_IsPremiumPlayerReady_h.create(		CalcPtr(_adr.LUI_COD_LuaCall_IsPremiumPlayerReady)			, lua_pushboolean_return_true_d);
+	//LUI_CoD_LuaCall_IsBattleNetAuthReady_h.create(		CalcPtr(_adr.LUI_CoD_LuaCall_IsBattleNetAuthReady)			, lua_pushboolean_return_true_d);
+	//LUI_CoD_LuaCall_IsConnectedToGameServer_h.create(	CalcPtr(_adr.LUI_CoD_LuaCall_IsConnectedToGameServer)		, lua_pushboolean_return_true_d);
 
 	//Cbuf_AddText("LSSSQMQPNL 1;MOSSSSTTNL 1;OLNTNRTPPL 1;OMPMKKTORN 1;MLNMPQOON 1;LRKNROSQPM 1;RLSPOOTTT 0;");
 	//Cbuf_AddText("MROLPRPTPO 1;LPNMMPKRL 1;OKLQKPPKPQ 0;LMSLLSMONN 1;MPSSOTQQPM 1;LSTQOKLTRN 1;LNTOKPTKS 0;");
@@ -3638,13 +3638,13 @@ void GameSetup()
 	//LiveStorage_StatsInit(0, 1, 0, StatsSource::STATS_OFFLINE);
 	// 
 	// 
-	//Live_SyncOnlineDataFence_GetState_h.create(			CalcAdr(_adr.Live_SyncOnlineDataFence_GetState)				, Live_SyncOnlineDataFence_GetState_d);
-	//Live_OnlineServicesFence_GetState_h.create(			CalcAdr(_adr.Live_OnlineServicesFence_GetState)				, Live_OnlineServicesFence_GetState_d);
-	//LUI_CoD_LuaCall_StatsResetGetState_h.create(		CalcAdr(_adr.LUI_CoD_LuaCall_StatsResetGetState)			, LUI_CoD_LuaCall_StatsResetGetState_d);
+	//Live_SyncOnlineDataFence_GetState_h.create(			CalcPtr(_adr.Live_SyncOnlineDataFence_GetState)				, Live_SyncOnlineDataFence_GetState_d);
+	//Live_OnlineServicesFence_GetState_h.create(			CalcPtr(_adr.Live_OnlineServicesFence_GetState)				, Live_OnlineServicesFence_GetState_d);
+	//LUI_CoD_LuaCall_StatsResetGetState_h.create(		CalcPtr(_adr.LUI_CoD_LuaCall_StatsResetGetState)			, LUI_CoD_LuaCall_StatsResetGetState_d);
 
 	//controllerIndexSize = 12;
 
-	//utils::hook::set<char>(CalcAdr(_adr.s_OnlineServicesFenceData_state) + (controllerIndexSize * 0), FenceOnlineServices_CODE_STATE::success);
+	//utils::hook::set<char>(CalcPtr(_adr.s_OnlineServicesFenceData_state) + (controllerIndexSize * 0), FenceOnlineServices_CODE_STATE::success);
 
 
 	//LiveStorage_BeginGame_f(LocalClientNum_t::LOCAL_CLIENT_0);
@@ -3664,9 +3664,9 @@ void GameSetup()
 	//LiveStorage_StatsInit(1, 1, 0, StatsSource::STATS_OFFLINE);
 
 
-	//utils::hook::jump(									CalcAdr(_adr.GamerProfile_IsProfileLoggedIn)				, GamerProfile_IsProfileLoggedIn_d);
-	//utils::hook::jump(									CalcAdr(_adr.Live_IsUserSignedInToDemonware)				, Live_IsUserSignedInToDemonware_d);
-	//utils::hook::jump(									CalcAdr(_adr.dwGetLogOnStatus)								, dwGetLogOnStatus_d);
+	//utils::hook::jump(									CalcPtr(_adr.GamerProfile_IsProfileLoggedIn)				, GamerProfile_IsProfileLoggedIn_d);
+	//utils::hook::jump(									CalcPtr(_adr.Live_IsUserSignedInToDemonware)				, Live_IsUserSignedInToDemonware_d);
+	//utils::hook::jump(									CalcPtr(_adr.dwGetLogOnStatus)								, dwGetLogOnStatus_d);
 }
 
 
@@ -3849,7 +3849,7 @@ HANDLE createConsole()
 		return NULL;
 	}
 
-	SetConsoleTitleA("Call of Duty : Modern Warfare (2019) - Project Donetsk Returned Version 1.57 Modded Client");
+	SetConsoleTitleA("Call of Duty : Modern Warfare (2019) - Project Donetsk Returned Version 1.67 Modded Client");
 
 	DWORD consoleMode;
 	GetConsoleMode(consoleHandle, &consoleMode);
@@ -3871,7 +3871,7 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD Reason, LPVOID lpVoid)
 	g_Addrs.ModuleBase = (uintptr_t)(GetModuleHandleA(NULL));
 	if (Reason == DLL_PROCESS_ATTACH)
 	{
-		//HANDLE hCmd = createConsole();
+		HANDLE hCmd = createConsole();
 		//if (hCmd == NULL)
 		//{
 		//	MessageBoxA(NULL, "Couldn't create console.", "MW19 1.57", MB_ICONERROR | MB_OK | MB_DEFBUTTON1);
@@ -3975,8 +3975,8 @@ bool Cbuf_AddText(const char* fmt, ...)
 
 	NotifyMsg("[Cbuf_AddText] <Notice> Formatted command: %s -> ", cmd);
 
-	uintptr_t xpartydisband = CalcAdr(_adr.xpartydisband);
-	uintptr_t endlobby = CalcAdr(_adr.GScr_EndLobby);
+	uintptr_t xpartydisband = CalcPtr(_adr.xpartydisband);
+	uintptr_t endlobby = CalcPtr(_adr.GScr_EndLobby);
 
 	try
 	{
@@ -4005,7 +4005,7 @@ bool Cbuf_AddText(const char* fmt, ...)
 //++++++++++++++++++++++++++++++
 void LUI_OpenMenu(uintptr_t localclientnum, const char* menuName, int isPopup, int isModal, int isExclusive)
 {
-	auto func = reinterpret_cast<void(*)(uintptr_t localclientnum, const char* menuName, int isPopup, int isModal, int isExclusive)>(CalcAdr(_adr.LUI_OpenMenu));
+	auto func = reinterpret_cast<void(*)(uintptr_t localclientnum, const char* menuName, int isPopup, int isModal, int isExclusive)>(CalcPtr(_adr.LUI_OpenMenu));
 	func(localclientnum, menuName, isPopup, isModal, isExclusive);
 }
 
@@ -4045,7 +4045,7 @@ void delayedStuff()
 dvar_t* Dvar_FindVarByName(const char* dvarName)
 {
 	//[48 83 EC 48 49 8B C8 E8 ?? ?? ?? ?? + 0x7] resolve call.
-	return reinterpret_cast<dvar_t * (__fastcall*)(const char* dvarName)>(CalcAdr(_adr.Dvar_FindVarByName))(dvarName);
+	return reinterpret_cast<dvar_t * (__fastcall*)(const char* dvarName)>(CalcPtr(_adr.Dvar_FindVarByName))(dvarName);
 }
 
 
@@ -4056,7 +4056,7 @@ dvar_t* Dvar_FindVarByName(const char* dvarName)
 //++++++++++++++++++++++++++++++
 void GamerProfile_SetDataByName(int controller_index, const char* setting_name, float setting_value)
 {
-	auto func = reinterpret_cast<void(*)(int controller_index, const char* setting_name, float setting_value)>(CalcAdr(_adr.GamerProfile_SetDataByName));
+	auto func = reinterpret_cast<void(*)(int controller_index, const char* setting_name, float setting_value)>(CalcPtr(_adr.GamerProfile_SetDataByName));
 	func(controller_index, setting_name, setting_value);
 }
 
@@ -4070,48 +4070,12 @@ int CL_GetLocalClientSignInState_d(int controller_index)
 {
 	if (force_sign_in_state_now && !signed_in)
 	{
-		uintptr_t unk_SignInState_p = CalcAdr(_adr.unk_SignInState);
+		uintptr_t unk_SignInState_p = CalcPtr(_adr.unk_SignInState);
 		uintptr_t unk_SignInState_buf = unk_SignInState_p + 256 * controller_index;
 		unk_SignInState_buf = 2;
 		signed_in = true;
 	}
 	return _hooks.CL_GetLocalClientSignInState_h.stub<int>(controller_index);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
